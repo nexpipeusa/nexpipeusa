@@ -506,8 +506,9 @@ const keys = ['weld','threaded','flanges','values'];
           <div class='vthumb'>
             <img src="${it.thumb||''}" alt="${it.name||''}" loading="lazy" decoding="async" />
           </div>
-            <div class='vbody'>
+          <div class='vbody'>
             <div class='vtitle'>${it.name}</div>
+            <p class='vnote'>${child.note||''}</p>
           </div>
           <div class='vgo'>View <span>›</span></div>`;
         listEl.appendChild(a);
