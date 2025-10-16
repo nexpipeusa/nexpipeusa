@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NEXPIPE · Product Detail</title>
+  <style>
+    :root{
+      --brand:#0f172a; --accent:#f59e0b; --muted:#64748b;
+      --bg:#f8fafc; --card:#ffffff; --radius:14px;
+      --shadow:0 8px 24px rgba(15,23,42,.08);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:#0b1220}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1200px;margin:0 auto;padding:0 16px}
+    .topbar{background:var(--brand);color:#fff;font-size:14px}
+    .topbar .container{display:flex;align-items:center;justify-content:space-between;padding:8px 16px}
+
+    /* Header (kept light per your original detail page) */
+    .nav{position:sticky;top:0;background:#fff;border-bottom:1px solid #e5e7eb;z-index:50}
+    .nav__row{display:flex;align-items:center;gap:16px;padding:14px 0}
+    .brand{font-weight:800;font-size:22px;letter-spacing:.4px}
+    .brand em{font-style:normal;color:var(--accent)}
+    .search{flex:1;display:flex}
+    .search input{width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-right:none;border-radius:10px 0 0 10px;outline:0}
+    .search button{padding:10px 14px;border:1px solid #e5e7eb;background:var(--card);border-radius:0 10px 10px 0;cursor:pointer}
+    .nav__links{display:flex;gap:18px;align-items:center}
+    .menu-btn{display:none;border:1px solid #e5e7eb;border-radius:10px;background:#fff;padding:8px 10px}
+    @media (max-width:880px){ .nav__links{display:none} .menu-btn{display:inline-block} }
+
+    /* Main: image left, text right */
+    .section{padding:22px 0}
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+    .detail{display:grid;grid-template-columns:1fr 1.1fr;gap:18px}
+    @media (max-width:900px){ .detail{grid-template-columns:1fr} }
+
+    .img-placeholder{width:100%;aspect-ratio:1/1;background:#fde047;border:2px dashed #ca8a04;border-radius:10px}
+    .img-16x9{aspect-ratio:16/9} .img-4x5{aspect-ratio:4/5}
+
+    .h1{font-size:28px;margin:0 0 6px}
+    .sub{color:var(--muted);margin:0 0 8px}
+    .price{font-size:22px;font-weight:800;margin:8px 0}
+    .sku{font-size:13px;color:var(--muted)}
+    .bullets, .specs{margin:8px 0 0 0;padding-left:18px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;font-weight:700;cursor:pointer}
+    .btn.primary{background:var(--brand);color:#fff;border-color:var(--brand)}
+    .crumb{font-size:14px;color:#334155;margin-bottom:10px}
+    .note{margin-top:10px;padding:10px 12px;background:#fff7ed;border:1px dashed #fdba74;border-radius:10px;color:#92400e}
+  </style>
+</head>
+<body>
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="container">
+      <div>📞 1-800-123-4567</div>
+      <div>📦 Free U.S. shipping on orders $99+ | ⏱️ Same-day shipping (business days)</div>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="container nav__row">
+      <button class="menu-btn" id="menuBtn">☰</button>
+      <a class="brand" href="index.html">NEX<em>PIPE</em></a>
+      <div class="search">
+        <input type="search" placeholder="Search: fittings, flanges, valves…" />
+        <button>Search</button>
+      </div>
+      <div class="nav__links" id="navLinks">
+        <a class="nav__link" href="index.html#categories">Categories</a>
+        <a class="nav__link" href="index.html#featured">Featured</a>
+        <a class="nav__link" href="index.html#about">About</a>
+        <a class="nav__link" href="index.html#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Detail -->
+  <section class="section">
+    <div class="container">
+      <div class="crumb"><a id="breadcrumbLink" href="category.html">← Back to Catalog</a></div>
+      <div class="detail">
+        <div class="card">
+          <div id="hero" class="img-placeholder" aria-label="Product image placeholder"></div>
+        </div>
+
+        <div class="card" style="padding:18px">
+          <h1 id="title" class="h1">Title</h1>
+          <p id="subtitle" class="sub">Subtitle</p>
+          <div class="price" id="price">$0.00 from</div>
+          <div class="sku" id="sku">SKU</div>
+
+          <div class="note" id="hero_note">Note</div>
+
+          <h3 style="margin:14px 0 6px">Key Features</h3>
+          <ul id="bullets" class="bullets"></ul>
+
+          <h3 style="margin:14px 0 6px">Specifications</h3>
+          <ul id="specs" class="specs"></ul>
+
+          <div style="display:flex;gap:10px;margin-top:14px">
+            <button class="btn primary">Add to Cart</button>
+            <a id="backBtn" class="btn" href="category.html">Back to Catalog</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="margin-top:22px;background:#0b1220;color:#cbd5e1">
+    <div class="container" style="padding:18px 16px">
+      <div class="brand">NEX<em>PIPE</em></div>
+      <div style="border-top:1px solid #1f2937;margin-top:10px;padding-top:10px;font-size:14px">
+        © 2025 NEXPIPE. For demo only.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Data & Script -->
+  <script src="products.js"></script>
+  <script>
+    // Read URL params
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id');                // product id
+    const type = params.get('type');            // top-level category (pipe-fittings / flanges / valves / pipes-accessories)
+
+    // Breadcrumb & back button → category.html (with ?type=... when available)
+    (function(){
+      const target = type
+        ? `category.html?type=${encodeURIComponent(type)}`
+        : `category.html`;
+      const breadcrumb = document.getElementById('breadcrumbLink');
+      const backBtn = document.getElementById('backBtn');
+      if (breadcrumb) { breadcrumb.href = target; breadcrumb.textContent = '← Back to Catalog'; }
+      if (backBtn) { backBtn.href = target; backBtn.textContent = 'Back to Catalog'; }
+    })();
+
+    // Load product
+    const DB = window.NEX_PRODUCTS || {};
+    const item = DB[id];
+
+    // Helper
+    function setText(id, txt){
+      const el = document.getElementById(id);
+      if(el && (txt || txt === 0)) el.textContent = txt;
+    }
+
+    if(!item){
+      setText('title', 'Item Not Found');
+      setText('subtitle', 'Please open this page from the catalog or choose a valid product.');
+    }else{
+      setText('title', item.title);
+      setText('subtitle', item.subtitle);
+      setText('price', `$${item.price_from.toFixed(2)} from`);
+      setText('sku', `SKU: ${item.sku} ｜ Material: ${item.material} ｜ Standard: ${item.standard}`);
+      setText('hero_note', item.hero_note);
+
+      // Placeholder aspect ratio
+      const hero = document.getElementById('hero');
+      if(item.img_ratio === '16/9') hero.classList.add('img-16x9');
+      if(item.img_ratio === '4/5')  hero.classList.add('img-4x5');
+
+      const bullets = document.getElementById('bullets');
+      (item.bullets||[]).forEach(s=>{
+        const li = document.createElement('li'); li.textContent = s; bullets.appendChild(li);
+      });
+
+      const specs = document.getElementById('specs');
+      (item.specs||[]).forEach(s=>{
+        const li = document.createElement('li'); li.textContent = s; specs.appendChild(li);
+      });
+    }
+
+    // Mobile menu
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    menuBtn?.addEventListener('click',()=>{
+      const show = navLinks.style.display === 'flex';
+      navLinks.style.display = show ? 'none' : 'flex';
+      navLinks.style.flexDirection = 'column';
+      navLinks.style.gap = '12px';
+    });
+  </script>
+</body>
+</html>
