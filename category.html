@@ -3,687 +3,627 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NEXPIPE · Catalog</title>
+  <title>NexPipe Website</title>
   <style>
     :root{
-      --brand:#0b1220;
-      --ink:#0b1220;
-      --muted:#64748b;
-      --accent:#f59e0b;
-      --bg:#f8fafc;
-      --card:#ffffff;
-      --line:#e5e7eb;
+      --brand:#0f172a; /* Dark headings */
+      --accent:#f59e0b; /* Amber */
+      --muted:#64748b; /* Secondary text */
+      --bg:#f8fafc;    /* Page background */
+      --card:#ffffff;  /* Card background */
       --radius:14px;
       --shadow:0 8px 24px rgba(15,23,42,.08);
     }
     *{box-sizing:border-box}
-    html,body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink)}
+    html,body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:#0b1220}
     a{color:inherit;text-decoration:none}
     img{display:block;max-width:100%}
     .container{max-width:1200px;margin:0 auto;padding:0 16px}
 
-    /* Topbar + Nav */
-    .topbar{background:var(--brand);color:#cbd5e1;font-size:14px}
+    /* Top bar */
+    .topbar{background:#0b1220;color:#cbd5e1;font-size:14px}
     .topbar .container{display:flex;align-items:center;justify-content:space-between;padding:8px 16px}
-    .nav{position:sticky;top:0;background:var(--brand);border-bottom:1px solid #1f2937;z-index:50}
+
+    /* Navigation */
+    .nav{position:sticky;top:0;background:#0b1220;border-bottom:1px solid #1f2937;z-index:50}
     .nav__row{display:flex;align-items:center;gap:16px;padding:14px 0}
-    .brand{font-weight:800;font-size:22px;letter-spacing:.4px;color:#e2e8f0}
+    .brand{font-weight:800;letter-spacing:.4px;font-size:22px;color:#e2e8f0}
     .brand em{font-style:normal;color:var(--accent)}
     .search{flex:1;display:flex}
     .search input{width:100%;padding:10px 12px;border:1px solid #1f2937;border-right:none;border-radius:10px 0 0 10px;outline:0;background:#0f172a;color:#e2e8f0}
     .search input::placeholder{color:#94a3b8}
     .search button{padding:10px 14px;border:1px solid #1f2937;background:#0f172a;color:#e2e8f0;border-radius:0 10px 10px 0;cursor:pointer}
-    .menu-btn{display:none;border:1px solid #1f2937;border-radius:10px;background:#0b1220;color:#e2e8f0;padding:8px 10px}
     .nav__links{display:flex;gap:18px;align-items:center}
     .nav__link{font-weight:600;color:#e2e8f0}
-    @media (max-width:880px){.nav__links{display:none}.menu-btn{display:inline-block}}
 
-    /* Layout */
-    .section{padding:22px 0}
-    .wrap{display:grid;grid-template-columns:280px 1fr;gap:16px}
-    @media (max-width:980px){.wrap{grid-template-columns:1fr}}
-    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
-    .card__content{padding:16px}
-    .crumb{font-size:14px;color:#334155;margin:10px 0}
+    /* Responsive menu button */
+    .menu-btn{display:none;border:1px solid #1f2937;border-radius:10px;background:#0b1220;color:#e2e8f0;padding:8px 10px}
+    @media (max-width: 880px){
+      .nav__links{display:none}
+      .menu-btn{display:inline-block}
+    }
 
-    /* Sidebar tree */
-    .tree{list-style:none;margin:0;padding:0}
-    .tree > li{margin-bottom:10px}
-    .node{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:1px solid var(--line);border-radius:10px;cursor:pointer;font-weight:700}
-    .node:hover{background:#f9fafb}
-    .children{display:none;margin-top:8px;margin-left:12px}
-    .children a{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border:1px dashed var(--line);border-radius:10px;margin-bottom:8px;color:var(--ink)}
-    .children a:hover{border-color:var(--accent)}
-    .open > .children{display:block}
+    /* Hero */
+    .hero{padding:22px 0}
+    .hero__wrap{display:grid;grid-template-columns:1.4fr .6fr;gap:16px}
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+    .card__content{padding:18px}
 
-    /* Right list */
-    .vlist{display:flex;flex-direction:column;gap:10px}
-    .vitem{display:flex;gap:14px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--card);box-shadow:var(--shadow);transition:transform .12s ease}
-    .vitem:hover{transform:translateY(-1px)}
-    .vthumb{width:96px;flex:0 0 96px}
-    .vthumb img{width:100%;height:auto;border-radius:10px}
-    .vbody{flex:1;min-width:0}
-    .vtitle{margin:0 0 4px;font-size:15px;font-weight:800}
-    .vnote{margin:0;color:var(--muted);font-size:13px}
-    .vgo{flex:0 0 auto;font-weight:700;display:flex;align-items:center;gap:6px}
+    /* Image placeholder */
+    .img-placeholder{width:100%;aspect-ratio:1/1;background:#fde047;border:2px dashed #ca8a04;border-radius:10px}
+    .img-wide{aspect-ratio:16/9}
+    .img-tall{aspect-ratio:4/5}
 
-    footer{margin-top:26px;background:#0b1220;color:#cbd5e1}
-    footer .container{padding:18px 16px}
+    /* Sections */
+    .section{padding:26px 0}
+    .section h2{font-size:22px;margin:0 0 14px}
+    .grid{display:grid;gap:16px}
+    .grid.cols-6{grid-template-columns:repeat(6,1fr)}
+    .grid.cols-4{grid-template-columns:repeat(4,1fr)}
+    .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+    @media (max-width:1024px){.grid.cols-6{grid-template-columns:repeat(4,1fr)}}
+    @media (max-width:768px){.grid.cols-6,.grid.cols-4{grid-template-columns:repeat(2,1fr)}.hero__wrap{grid-template-columns:1fr}}
+
+    /* Category (uses product card visuals) */
+    .category{display:flex;flex-direction:column;gap:10px;padding:14px;background:var(--card);border-radius:12px;box-shadow:var(--shadow)}
+    .category span{font-weight:600}
+
+    /* Product card */
+    .product{background:var(--card);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;transition:transform .12s ease}
+    .product:hover{transform:translateY(-2px)}
+    .product__body{padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+    .price{font-weight:800}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 12px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;font-weight:600;cursor:pointer}
+    .btn.primary{background:var(--brand);color:#fff;border-color:var(--brand)}
+
+    /* Feature banners */
+    .banner{display:flex;gap:16px;align-items:center;padding:14px;background:var(--brand);color:#fff;border-radius:12px}
+
+    /* Footer */
+    footer{margin-top:30px;background:#0b1220;color:#cbd5e1}
+    footer .container{display:grid;gap:20px;padding:26px 16px}
+    footer a{color:#e2e8f0}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:16px}
+    @media (max-width:880px){.footer-grid{grid-template-columns:1fr 1fr}}
+    .copyright{border-top:1px solid #1f2937;margin-top:12px;padding-top:12px;font-size:14px}
+
+    /* Size helpers used earlier */
+    .product--xs .product__body{padding:8px 10px}
+    .product--xs h3{font-size:13px}
+    .product--xs .price{font-size:13px}
+    .product--xs .btn{padding:6px 8px;font-size:13px}
+    .product--xs .img-placeholder{aspect-ratio:1/1}
+
+
+    .hero-banner{
+    position: relative;
+    min-height: 420px;               /* 16:9 大图可见高度，可按需调 */
+    aspect-ratio: 16/9;
+    background:
+      linear-gradient(90deg,
+        rgba(11,18,32,.80) 0%,
+        rgba(11,18,32,.48) 36%,
+        rgba(11,18,32,.10) 62%,
+        rgba(11,18,32,0) 78%),
+      var(--hero, none);
+    background-size: cover;
+    background-position: center;
+    display: grid;
+    place-items: end start;          /* 文案贴左下 */
+  }
+
+  .hero-banner__copy{
+    padding: 18px 18px 20px;
+    max-width: 70%;
+    color: #f8fafc;                  /* 叠字颜色 */
+    text-shadow: 0 2px 10px rgba(0,0,0,.35);
+  }
+  .hero-banner__copy h1{
+    margin:0 0 6px;
+    font-weight: 800;
+    letter-spacing:.2px;
+  }
+  .hero-banner__copy p{
+    margin:0; color:#cbd5e1;
+  }
+
+  .hero-photo{
+    aspect-ratio: 16/9;
+    min-height: 420px; /* 可按需调 */
+    background:
+      linear-gradient(90deg,
+        rgba(11,18,32,.80) 0%,
+        rgba(11,18,32,.48) 36%,
+        rgba(11,18,32,.10) 62%,
+        rgba(11,18,32,0) 78%),
+      var(--hero, none);
+    background-size: cover;
+    background-position: center;
+    border-bottom: 1px solid #e5e7eb; /* 细分隔线，可删 */
+  }
+
+  @media (max-width:768px){
+    .hero-photo{ min-height: 300px; }
+  }
   </style>
 </head>
 <body>
-  <!-- Header -->
+  <!-- Top bar -->
   <div class="topbar">
     <div class="container">
       <div>📞 1-213-595-9270</div>
-      <!-- <div>📦 Free U.S. shipping $99+ | ⏱️ Same-day (business days)</div> -->
     </div>
   </div>
+
+  <!-- Navigation -->
   <nav class="nav">
     <div class="container nav__row">
       <button class="menu-btn" id="menuBtn">☰</button>
-      <a class="brand" href="index.html">NEX<em>PIPE</em></a>
-      <div class="search"><input type="search" placeholder="Search the catalog…"><button>Search</button></div>
+      <a class="brand" href="index.html" aria-label="NEXPIPE home">NEX<em>PIPE</em></a>
+      <div class="search">
+        <input type="search" placeholder="Search: fittings, flanges, valves…" />
+        <button>Search</button>
+      </div>
       <div class="nav__links" id="navLinks">
-        <a class="nav__link" href="index.html#categories">Categories</a>
-        <a class="nav__link" href="index.html#featured">Applications</a>
-        <a class="nav__link" href="index.html#about">About</a>
-        <a class="nav__link" href="index.html#contact">Contact</a>
+        <a class="nav__link" href="#categories">Categories</a>
+        <a class="nav__link" href="#featured">Applications</a>
+        <a class="nav__link" href="#about">About</a>
+        <a class="nav__link" href="#contact">Contact</a>
       </div>
     </div>
   </nav>
 
-  <section class="container section">
-    <div class="crumb"><a href="index.html#categories">← Back to Categories</a></div>
-    <div class="wrap">
-      <!-- LEFT: category tree -->
-      <aside class="card"><div class="card__content">
-        <h3 style="margin:0 0 10px">Browse</h3>
-        <ul class="tree" id="tree"></ul>
-      </div></aside>
-
-      <!-- RIGHT: subcategory/items -->
-      <main class="card"><div class="card__content">
-        <h1 id="title" style="margin:0 0 8px;font-size:24px"></h1>
-        <p id="subtitle" class="muted" style="margin:0 0 14px"></p>
-        <div id="list" class="vlist"></div>
-      </div></main>
+  <section class="hero">
+  <div class="container hero__wrap">
+    <div class="card" style="overflow:hidden">
+      <div class="hero-photo"
+          style="--hero:url('image/main.png');"
+          aria-label="NEXPIPE letters formed by flanges & pipe fittings at refinery sunset">
+      </div>
+      <div class="card__content">
+        <h1 style="margin:0 0 6px">Industrial Piping Components — One-Stop Supply</h1>
+        <p style="margin:0;color:var(--muted)">Carbon Steel / Stainless 304·316 / Duplex / Nickel Alloys</p>
+      </div>
     </div>
-  </section>
 
-  <footer>
+    <div class="card">
+      <div class="card__content">
+        <!-- Project / Bulk RFQ -->
+        <div class="banner" style="background:#1e293b">
+          <img src="icon/upload.svg" alt="Upload BOM" width="68" height="68"
+               style="flex:0 0 68px; object-fit:contain; display:block; filter:invert(1) brightness(1.2)" />
+          <div>
+            <strong>Project / Bulk RFQ</strong><br/>
+            <small>Upload your BOM.</small>
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <!-- Quick Quote (No BOM) -->
+        <div class="banner" style="background:#1e293b">
+          <img src="icon/zap.svg" alt="Quick Quote" width="68" height="68"
+               style="flex:0 0 68px;object-fit:contain;display:block;filter:invert(1)" />
+          <div>
+            <strong>Quick Quote (No BOM)</strong><br/>
+            <small>Tell us size, spec, and quantity.</small>
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <!-- Live Stock Check -->
+        <div class="banner" style="background:#1e293b">
+          <img src="icon/boxes.svg" alt="Live Stock Check" width="68" height="68"
+               style="flex:0 0 68px;object-fit:contain;display:block;filter:invert(1)" />
+          <div>
+            <strong>Live Stock Check</strong><br/>
+            <small>See sizes in stock and next-heat ETA.</small>
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <!-- Material Certificates & Compliance -->
+        <div class="banner" style="background:#1e293b">
+          <img src="icon/shield-check.svg" alt="Certificates & Compliance" width="68" height="68"
+               style="flex:0 0 68px;object-fit:contain;display:block;filter:invert(1)" />
+          <div>
+            <strong>Material Certificates & Compliance</strong><br/>
+            <small>MTR / CoC available on request.</small>
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <!-- Technical Help -->
+        <div class="banner" style="background:#1e293b">
+          <img src="icon/headphones.svg" alt="Technical Help" width="68" height="68"
+               style="flex:0 0 68px;object-fit:contain;display:block;filter:invert(1)" />
+          <div>
+            <strong>Technical Help</strong><br/>
+            <small>Specs, substitutions, and selection support from an engineer.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="categories" class="section">
+  <div class="container">
+    <h2>Popular Categories</h2>
+    <div class="grid cols-4">
+      <!-- 1) Welded Fittings -->
+      <a class="product" href="category.html?type=weld" aria-label="Browse Welded Fittings">
+        <img src="category/collage_fitting_3x2.png"
+             alt="Welded Fittings collage" loading="lazy" decoding="async" />
+        <div class="product__body">
+          <h3 style="margin:0">Welded Fittings</h3>
+          <span class="btn primary">Shop Category</span>
+        </div>
+      </a>
+
+      <!-- 2) Threaded Fittings -->
+      <a class="product" href="category.html?type=threaded" aria-label="Browse Threaded Fittings">
+        <img src="category/collage_threaded_3x2.png"
+             alt="Threaded Fittings collage" loading="lazy" decoding="async" />
+        <div class="product__body">
+          <h3 style="margin:0">Threaded Fittings</h3>
+          <span class="btn primary">Shop Category</span>
+        </div>
+      </a>
+
+      <!-- 3) Flanges -->
+      <a class="product" href="category.html?type=flanges" aria-label="Browse Flanges">
+        <img src="category/collage_flanges_3x2.png"
+             alt="Flanges collage" loading="lazy" decoding="async" />
+        <div class="product__body">
+          <h3 style="margin:0">Flanges</h3>
+          <span class="btn primary">Shop Category</span>
+        </div>
+      </a>
+
+      <!-- 4) Valves -->
+      <a class="product" href="category.html?type=valves" aria-label="Browse Valves">
+        <img src="category/collage_valves_3x2.png"
+             alt="Valves collage" loading="lazy" decoding="async" />
+        <div class="product__body">
+          <h3 style="margin:0">Valves</h3>
+          <span class="btn primary">Shop Category</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<style>
+  /* 卡片布局与样式 */
+  #featured .grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:18px;
+  }
+  #featured .product.product--xs{
+    display:flex; align-items:center; gap:14px;
+    padding:16px; border-radius:16px; background:#fff;
+    box-shadow:0 6px 20px rgba(15,23,42,.08);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  #featured .product.product--xs:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 28px rgba(15,23,42,.12);
+  }
+
+  /* 更大的图，和白卡片内边距对齐 */
+  #featured .thumb{
+    width:350px; height:275px; flex:0 0 200px;
+    border-radius:18px; background-size:cover; background-position:center;
+    background-repeat:no-repeat;
+  }
+
+  /* 标题略大、描述略小 */
+  #featured .product__body h3{ margin:0; line-height:1.25; }
+  #featured .product__body h3 strong{
+    display:block; font-size:1.08rem; font-weight:800; color:#0b1220;
+  }
+  #featured .product__body .subtext{
+    display:block; margin-top:4px;
+    font-size:.96rem; font-weight:600; color:#475569;
+  }
+
+  /* 响应式：平板两列，手机一列；缩略图相应缩小 */
+  @media (max-width:1024px){
+    #featured .grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  }
+  @media (max-width:640px){
+    #featured .grid{ grid-template-columns:1fr; }
+    #featured .thumb{ width:72px; height:72px; flex-basis:72px; border-radius:16px; }
+  }
+</style>
+
+<section id="featured" class="section" style="padding-top:0">
+  <div class="container">
+    <h2>Industries & Applications</h2>
+
+    <div class="grid cols-3">
+      <!-- 1) Petrochemical & Refining -->
+      <a class="product product--xs" aria-label="Petrochemical & Refining">
+        <div class="thumb"
+             style="background-image:url('image/Petrochemical%20%26%20Refining.jpg');"></div>
+        <div class="product__body">
+          <h3>
+            <strong>Petrochemical &amp; Refining</strong>
+            <span class="subtext">Process piping · High-temp · Corrosive</span>
+          </h3>
+        </div>
+      </a>
+
+      <!-- 2) Oil & Gas (Up/Mid) -->
+      <a class="product product--xs"  aria-label="Oil & Gas (Upstream/Midstream)">
+        <div class="thumb"
+             style="background-image:url('image/Oil%20%26%20Gas.jpg');"></div>
+        <div class="product__body">
+          <h3>
+            <strong>Oil &amp; Gas (Up/Mid)</strong>
+            <span class="subtext">Flowlines · Manifolds · Integrity</span>
+          </h3>
+        </div>
+      </a>
+
+      <!-- 3) Offshore & Marine -->
+      <a class="product product--xs" href="detail.html?type=applications&segment=offshore-marine" aria-label="Offshore & Marine">
+        <div class="thumb"
+             style="background-image:url('image/offshore.jpg');"></div>
+        <div class="product__body">
+          <h3>
+            <strong>Offshore &amp; Marine</strong>
+            <span class="subtext">Seawater systems · Anti-corrosion</span>
+          </h3>
+        </div>
+      </a>
+
+      <!-- 4) Subsea Equipment -->
+      <a class="product product--xs" aria-label="Subsea Equipment">
+        <div class="thumb"
+             style="background-image:url('image/subsea.jpg');"></div>
+        <div class="product__body">
+          <h3>
+            <strong>Subsea Equipment</strong>
+            <span class="subtext">High-pressure · SCC resistant</span>
+          </h3>
+        </div>
+      </a>
+
+      <!-- 5) Power & High-Temp -->
+      <a class="product product--xs" aria-label="Power & High-Temperature Service">
+        <div class="thumb"
+             style="background-image:url('image/Power%20%26%20High.jpg');"></div>
+        <div class="product__body">
+          <h3>
+            <strong>Power &amp; High-Temp</strong>
+            <span class="subtext">Steam lines · Heaters · Exchangers</span>
+          </h3>
+        </div>
+      </a>
+
+      <!-- 6) Water Treatment & Desal -->
+      <a class="product product--xs" aria-label="Water Treatment & Desalination">
+        <div class="thumb"
+             style="background-image:url('image/Water%20Treatment.jpg');"></div>
+        <div class="product__body">
+          <h3>
+            <strong>Water Treatment &amp; Desal</strong>
+            <span class="subtext">RO/brine circuits · Dosing lines</span>
+          </h3>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- Brand / Guarantees -->
+<section class="section">
+  <div class="container">
+    <div class="card">
+      <div class="card__content">
+        <div class="grid cols-3">
+          <!-- 1) Industrial-Grade Quality -->
+          <div class="banner" style="background:#f59e0b;color:#1f2937;display:flex;gap:12px;align-items:center;padding:16px;border-radius:12px">
+            <img src="icon/shield-check.png" alt="Industrial-grade quality icon" width="64" height="64" loading="lazy" decoding="async" style="flex:0 0 64px;object-fit:contain;display:block" />
+            <div>
+              <strong>Industrial-Grade Quality</strong><br/>
+              <small>Meets ASME/ANSI standards</small>
+            </div>
+          </div>
+
+          <!-- 2) Fast Fulfillment -->
+          <div class="banner" style="background:#f59e0b;color:#1f2937;display:flex;gap:12px;align-items:center;padding:16px;border-radius:12px">
+            <img src="icon/truck-delivery.png" alt="Fast fulfillment delivery truck icon" width="64" height="64" loading="lazy" decoding="async" style="flex:0 0 64px;object-fit:contain;display:block" />
+            <div>
+              <strong>Fast Fulfillment</strong><br/>
+              <small>Ships same business day</small>
+            </div>
+          </div>
+
+          <!-- 3) Expert Support -->
+          <div class="banner" style="background:#f59e0b;color:#1f2937;display:flex;gap:12px;align-items:center;padding:16px;border-radius:12px">
+            <img src="icon/headset.png" alt="Expert support headset icon" width="64" height="64" loading="lazy" decoding="async" style="flex:0 0 64px;object-fit:contain;display:block" />
+            <div>
+              <strong>Expert Support</strong><br/>
+              <small>Assistance from engineer team</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- Newsletter / Updates -->
+  <!-- <section class="section">
     <div class="container">
-      <div class="brand" style="color:#e2e8f0">NEX<em>PIPE</em></div>
-      <div style="border-top:1px solid #1f2937;margin-top:10px;padding-top:10px;font-size:14px">© 2025 NEXPIPE. For demo only.</div>
+      <div class="card">
+        <div class="card__content" style="display:grid;gap:16px;grid-template-columns:1fr .8fr;align-items:center">
+          <div>
+            <h2 style="margin:0 0 8px">Subscribe for New Arrivals & Deals</h2>
+            <p style="margin:0;color:var(--muted)">Enter your email to receive inventory updates, pricing, and industry news.</p>
+          </div>
+          <form class="search" onsubmit="event.preventDefault()">
+            <input type="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+          </form>
+        </div>
+      </div>
     </div>
+  </section> -->
+
+  <!-- Footer -->
+  <footer id="about">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand">NEX<em>PIPE</em></div>
+        <p style="color:#94a3b8">Industrial components direct-supply platform.</p>
+      </div>
+      <div>
+        <div>
+          <strong>Products</strong>
+          <ul style="list-style:none;padding:0;margin:8px 0 0;display:grid;gap:6px">
+            <li><a href="category.html?type=welded-fittings">Welded Fittings</a></li>
+            <li><a href="category.html?type=threaded">Threaded Fittings</a></li>
+            <li><a href="category.html?type=flanges">Flanges</a></li>
+            <li><a href="category.html?type=valves">Valves</a></li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <strong>Support</strong>
+        <ul style="list-style:none;padding:0;margin:8px 0 0;display:grid;gap:6px">
+          <li><a href="#">Materials & Standards</a></li>
+          <li><a href="#">Shipping & Returns</a></li>
+          <li><a href="#">Invoices & Taxes</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+      </div>
+      <div id="contact-mini">
+        <strong>Contact</strong>
+        <ul style="list-style:none;padding:0;margin:8px 0 0;display:grid;gap:6px">
+          <li>📍 Houston, TX</li>
+          <li>✉️ sales@nexpipeusa.com</li>
+          <li>📞 1-213-595-9270</li>
+        </ul>
+      </div>
+    </div>
+    <div class="container copyright">© 2025 NEXPIPE. For demo only.</div>
   </footer>
 
-<script>
-  // --- Legacy slug compatibility (optional) ---
-  const LEGACY_MAP = {
-    'pipe-fittings': 'weld',
-    'pipes-accessories': 'threaded'
-  };
-
-  /* ========= Catalog dataset =========
-     只对 weld 增加二级 items；其它分类保持原样
-  */
-  const CATALOG = {
-    /* 1) WELD — has 2nd-level items */
-    'weld': {
-      title: 'Welded Fittings',
-      subtitle: 'Butt-Weld & High-Pressure Socket-Weld · Carbon/Stainless · Schedules 10/40/80/160',
-      children: [
-        {
-          key:'bw',
-          name:'Butt-Weld Fittings',
-          note:'Elbows · Tees · Reducers · Caps · Stub Ends',
-          id:'weld-bw',
-          thumb:'sub_category/weld/对焊管件/对焊45°弯头Sch40s（滚砂）.png',
-          items: [
-            { name:'180° Elbow · Sch10s (Sandblasted)', thumb:'sub_category/weld/对焊管件/对焊180°弯头Sch10s（滚砂）.png' },
-            { name:'180° Elbow · Sch40s (Sandblasted)', thumb:'sub_category/weld/对焊管件/对焊180°弯头Sch40s（滚砂）.png' },
-            { name:'180° Elbow · Sch80s (Sandblasted)', thumb:'sub_category/weld/对焊管件/对焊180°弯头Sch80s（滚砂）.png' },
-            { name:'45° Elbow · Sch10s (Sandblasted)',  thumb:'sub_category/weld/对焊管件/对焊45°弯头Sch10s（滚砂）.png' },
-            { name:'45° Elbow · Sch40s (Sandblasted)',  thumb:'sub_category/weld/对焊管件/对焊45°弯头Sch40s（滚砂）.png' },
-            { name:'45° Elbow · Sch80s (Sandblasted)',  thumb:'sub_category/weld/对焊管件/对焊45°弯头Sch80s（滚砂）.png' },
-            { name:'LR Elbow · Sch10s (Sandblasted)',   thumb:'sub_category/weld/对焊管件/对焊长半径（LR）弯头Sch10s（滚砂）.png' },
-            { name:'LR Elbow · Sch40s (Sandblasted)',   thumb:'sub_category/weld/对焊管件/对焊长半径（LR）弯头Sch40s（滚砂）.png' },
-            { name:'LR Elbow · Sch80s (Sandblasted)',   thumb:'sub_category/weld/对焊管件/对焊长半径（LR）弯头Sch80s（滚砂）.png' },
-            { name:'SR Elbow · Sch10s (Sandblasted)',   thumb:'sub_category/weld/对焊管件/对焊短半径（SR）弯头Sch10s（滚砂）.png' },
-            { name:'SR Elbow · Sch40s (Sandblasted)',   thumb:'sub_category/weld/对焊管件/对焊短半径（SR）弯头Sch40s（滚砂）.png' },
-            { name:'SR Elbow · Sch80s (Sandblasted)',   thumb:'sub_category/weld/对焊管件/对焊短半径（SR）弯头Sch80s（滚砂）.png' },
-            { name:'Equal Tee · Sch10s (Sandblasted)',  thumb:'sub_category/weld/对焊管件/对焊三通Sch10s（滚砂）.png' },
-            { name:'Equal Tee · Sch40s (Sandblasted)',  thumb:'sub_category/weld/对焊管件/对焊三通Sch40s（滚砂）.png' },
-            { name:'Equal Tee · Sch80s (Sandblasted)',  thumb:'sub_category/weld/对焊管件/对焊三通Sch80s（滚砂）.png' },
-            { name:'Reducing Tee · Sch10s (Sandblasted)', thumb:'sub_category/weld/对焊管件/对焊异径三通Sch10s（滚砂）.png' },
-            { name:'Reducing Tee · Sch40s (Sandblasted)', thumb:'sub_category/weld/对焊管件/对焊异径三通Sch40s（滚砂）.png' },
-            { name:'Reducing Tee · Sch80s (Sandblasted)', thumb:'sub_category/weld/对焊管件/对焊异径三通Sch80s（滚砂）.png' },
-            { name:'Concentric Reducer · Sch10s (Sandblasted)', thumb:'sub_category/weld/对焊管件/对焊同心大小头Sch10s（滚砂）.png' },
-            { name:'Concentric Reducer · Sch40s (Sandblasted)', thumb:'sub_category/weld/对焊管件/对焊同心大小头Sch40s（滚砂）.png' },
-            { name:'Concentric Reducer · Sch80s (Sandblasted)', thumb:'sub_category/weld/对焊管件/对焊同心大小头Sch80s（滚砂）.png' },
-            { name:'Eccentric Reducer · Sch10s (Sandblasted)',  thumb:'sub_category/weld/对焊管件/对焊偏心大小头Sch10s（滚砂）.png' },
-            { name:'Eccentric Reducer · Sch40s (Sandblasted)',  thumb:'sub_category/weld/对焊管件/对焊偏心大小头Sch40s（滚砂）.png' },
-            { name:'Eccentric Reducer · Sch80s (Sandblasted)',  thumb:'sub_category/weld/对焊管件/对焊偏心大小头Sch80s（滚砂）.png' },
-            { name:'End Cap · Sch10s (Sandblasted)',     thumb:'sub_category/weld/对焊管件/对焊管帽Sch10s（滚砂）.png' },
-            { name:'End Cap · Sch40s (Sandblasted)',     thumb:'sub_category/weld/对焊管件/对焊管帽Sch40s（滚砂）.png' },
-            { name:'End Cap · Sch80s (Sandblasted)',     thumb:'sub_category/weld/对焊管件/对焊管帽Sch80s（滚砂）.png' },
-            { name:'Stub End · Sch10s (Machined)',       thumb:'sub_category/weld/对焊管件/翻边短节Sch10s（精车）.png' },
-            { name:'Stub End · Sch80s (Machined)',       thumb:'sub_category/weld/对焊管件/翻边短节Sch80s（精车）.png' }
-          ]
-        },
-        {
-          key:'cs-sw',
-          name:'High-Pressure Socket-Weld (Carbon Steel)',
-          note:'Tees · Elbows · Couplings · Caps · Unions',
-          id:'weld-cs-sw',
-          thumb:'sub_category/weld/碳钢高压承插管件/高压碳钢承插焊三通.png',
-          items: [
-            { name:'SW Tee (CS · High-Pressure)',    thumb:'sub_category/weld/碳钢高压承插管件/高压碳钢承插焊三通.png' },
-            { name:'SW Cross (CS · High-Pressure)',  thumb:'sub_category/weld/碳钢高压承插管件/高压碳钢承插焊四通.png' },
-            { name:'SW Elbow (CS · High-Pressure)',  thumb:'sub_category/weld/碳钢高压承插管件/高压碳钢承插焊弯头.png' },
-            { name:'SW Half Coupling (CS)',          thumb:'sub_category/weld/碳钢高压承插管件/高压碳钢承插焊半管箍.png' },
-            { name:'SW Double-Socket Coupling (CS)', thumb:'sub_category/weld/碳钢高压承插管件/高压碳钢承插焊双承口管箍.png' },
-            { name:'SW Coupling (CS) · Photo A',     thumb:'sub_category/weld/碳钢高压承插管件/6K2A0403.jpg' },
-            { name:'SW Cap (CS · High-Pressure)',    thumb:'sub_category/weld/碳钢高压承插管件/高压碳钢承插焊管帽.png' },
-            { name:'Union (CS · SW High-Pressure)',  thumb:'sub_category/weld/碳钢高压承插管件/高压碳钢承插焊活接头.png' },
-            { name:'Reference Photo B (CS · SW)',    thumb:'sub_category/weld/碳钢高压承插管件/6K2A0404.jpg' },
-            { name:'Reference Photo C (CS · SW)',    thumb:'sub_category/weld/碳钢高压承插管件/6K2A0405.jpg' }
-          ]
-        },
-        {
-          key:'ss-sw',
-          name:'High-Pressure Socket/Threaded (Stainless Steel)',
-          note:'Tees · Elbows · Reducers · Caps · Couplings · O-Lets',
-          id:'weld-ss-sw',
-          thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊三通.png',
-          items: [
-            { name:'Branch Outlet (BW · SS)',             thumb:'sub_category/weld/高压承插管件/不锈钢对焊支管台.png' },
-            { name:'Branch Outlet (SW · SS)',             thumb:'sub_category/weld/高压承插管件/不锈钢承插焊支管台.png' },
-            { name:'Union (BW · SS · High-Pressure)',     thumb:'sub_category/weld/高压承插管件/高压不锈钢对焊活接头.png' },
-            { name:'SW Tee (SS · High-Pressure)',         thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊三通.png' },
-            { name:'SW Cross (SS · High-Pressure)',       thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊四通.png' },
-            { name:'SW Elbow (SS · High-Pressure)',       thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊弯头.png' },
-            { name:'SW 45° Elbow (SS · High-Pressure)',   thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊45°弯头.png' },
-            { name:'SW Half Coupling (SS)',               thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊半管箍.png' },
-            { name:'SW Coupling (SS)',                    thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊管箍.png' },
-            { name:'Reducer (SS · High-Pressure)',        thumb:'sub_category/weld/高压承插管件/高压不锈钢缩减管.png' },
-            { name:'Reducing Tee 1/4–1″ (SS · SW)',       thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊变径三通1、4-1“.png' },
-            { name:'Reducing Tee 1/4–2″ (SS · SW)',       thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊变径三通11、4-2”.png' },
-            { name:'Reducing Coupling 1/4–1″ (SS · SW)',  thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊变径管箍1、4-1“.png' },
-            { name:'Reducing Coupling 1/4–2″ (SS · SW)',  thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊变径管箍11、4-2”.png' },
-            { name:'SW Cap (SS · High-Pressure)',         thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊管帽.png' },
-            { name:'45° Elbow · Threaded (SS · BSPT)',    thumb:'sub_category/weld/高压承插管件/高压不锈钢螺纹45°弯头（BSPT）.png' },
-            { name:'45° Elbow · Threaded (SS · NPT)',     thumb:'sub_category/weld/高压承插管件/高压不锈钢螺纹45°弯头（NPT）.png' }
-          ]
-        }
-      ]
-    },
-
-    'threaded': {
-      title: 'Threaded Fittings',
-      subtitle: 'BSPT/NPT · Low-Pressure & High-Pressure · Carbon/Stainless',
-      children: [
-        {
-          key:'low',
-          name:'Low-Pressure Threaded Fittings',
-          note:'Elbows · Tees · Couplings · Caps · Hose Ends · Unions',
-          id:'threaded-low',
-          thumb:'sub_category/threaded/低压螺纹管件/低压内丝四通（NPT）.png',
-          items: [
-            { name:'Plain Female Coupling',                    thumb:'sub_category/threaded/低压螺纹管件/低压光面内丝直通.png' },
-            { name:'45° Elbow (NPT)',                          thumb:'sub_category/threaded/低压螺纹管件/低压45°弯头（NPT）.png' },
-            { name:'Female-to-Weld Union (BSPT)',              thumb:'sub_category/threaded/低压螺纹管件/内丝转焊接活接头（BSPT）.png' },
-            { name:'Plain Weld Hose Connector',                thumb:'sub_category/threaded/低压螺纹管件/低压光面焊接皮管接头.png' },
-            { name:'Plain Hose Connector (BSPT)',              thumb:'sub_category/threaded/低压螺纹管件/低压光面皮管接头（BSPT）.png' },
-            { name:'Male-to-Female Elbow Union (BSPT)',        thumb:'sub_category/threaded/低压螺纹管件/外丝转内丝弯头活接头（BSPT）.png' },
-            { name:'Male-to-Weld Union (BSPT)',                thumb:'sub_category/threaded/低压螺纹管件/外丝转焊接活接头（BSPT）.png' },
-            { name:'Weld-to-Female Elbow Union (BSPT)',        thumb:'sub_category/threaded/低压螺纹管件/焊接转内丝弯头活接头（BSPT）.png' },
-            { name:'Plain Hose Connector (NPT)',               thumb:'sub_category/threaded/低压螺纹管件/低压光面皮管接头（NPT）.png' },
-
-            { name:'Female-Male-Female Tee',                   thumb:'sub_category/threaded/低压螺纹管件/低压内外内牙三通.png' },
-            { name:'Male-Female-Male Tee',                     thumb:'sub_category/threaded/低压螺纹管件/低压外内外牙三通.png' },
-            { name:'Male-Male-Female Tee',                     thumb:'sub_category/threaded/低压螺纹管件/低压外外内丝三通.png' },
-
-            { name:'Male-Female Adapter',                      thumb:'sub_category/threaded/低压螺纹管件/内外螺纹转接头.png' },
-            { name:'Heavy-Duty SS Water Tank Fitting',         thumb:'sub_category/threaded/低压螺纹管件/加厚不锈钢水箱接头.png' },
-            { name:'Faucet Bent-Leg Connector',                thumb:'sub_category/threaded/低压螺纹管件/龙头曲脚接头.png' },
-
-            { name:'Male Elbow (BSPT)',                        thumb:'sub_category/threaded/低压螺纹管件/低压外丝弯头(BSPT).png' },
-            { name:'Male-Female Elbow (BSPT)',                 thumb:'sub_category/threaded/低压螺纹管件/低压内外丝弯头（BSPT）.png' },
-
-            { name:'Double-Ended Nipple 100mm (BSPT · 16KG)',  thumb:'sub_category/threaded/低压螺纹管件/16KG光面双头管外丝100MM（BSPT）.png' },
-            { name:'Double-Ended Nipple 100mm (NPT · 16KG)',   thumb:'sub_category/threaded/低压螺纹管件/16KG光面双头管外丝100MM（NPT）.png' },
-            { name:'Single-Ended Nipple (BSPT · 16KG)',        thumb:'sub_category/threaded/低压螺纹管件/16KG光面单头管外丝（BSPT）.png' },
-            { name:'Single-Ended Nipple (NPT · 16KG)',         thumb:'sub_category/threaded/低压螺纹管件/16KG光面单头管外丝（NPT）.png' },
-
-            { name:'Butt-Weld Union (25KG)',                   thumb:'sub_category/threaded/低压螺纹管件/低压对焊活接头（25KG）.png' },
-
-            { name:'Hex Socket Plug (304)',                    thumb:'sub_category/threaded/低压螺纹管件/304内六角堵头.png' },
-            { name:'Hex Socket Flanged Plug (304)',            thumb:'sub_category/threaded/低压螺纹管件/304内六角带边堵头.png' },
-            { name:'Hex Head Flanged Plug (304)',              thumb:'sub_category/threaded/低压螺纹管件/304外六角带边堵头.png' },
-
-            { name:'Hex Nipple (BSPT)',                        thumb:'sub_category/threaded/低压螺纹管件/低压六角对丝（BSPT）.png' },
-            { name:'Hex Hose Connector (BSPT)',                thumb:'sub_category/threaded/低压螺纹管件/低压六角皮管接头（BSPT）.png' },
-            { name:'Female Cross (BSPT)',                      thumb:'sub_category/threaded/低压螺纹管件/低压内丝四通（BSPT）.png' },
-            { name:'Female Cap (BSPT)',                        thumb:'sub_category/threaded/低压螺纹管件/低压内丝管帽（BSPT）.png' },
-            { name:'Female Coupling (BSPT)',                   thumb:'sub_category/threaded/低压螺纹管件/低压内丝管箍（BSPT）.png' },
-            { name:'Male-Female Union (BSPT)',                 thumb:'sub_category/threaded/低压螺纹管件/低压内外丝活接头（BSPT）.png' },
-            { name:'Male-Female Coupling (BSPT)',              thumb:'sub_category/threaded/低压螺纹管件/低压内外丝管箍（BSPT）.png' },
-            { name:'Double-Male Union (BSPT)',                 thumb:'sub_category/threaded/低压螺纹管件/低压双头外丝活接头（BSPT）.png' },
-            { name:'Reducing Hex Nipple (BSPT)',               thumb:'sub_category/threaded/低压螺纹管件/低压变径六角对丝（BSPT）.png' },
-            { name:'Reducing Female Socket (BSPT)',            thumb:'sub_category/threaded/低压螺纹管件/低压变径内丝（BSPT）.png' },
-            { name:'Gasket Union (BSPT)',                      thumb:'sub_category/threaded/低压螺纹管件/低压垫片活接头（BSPT）.png' },
-            { name:'Male Tee (BSPT)',                          thumb:'sub_category/threaded/低压螺纹管件/低压外丝三通（BSPT）.png' },
-            { name:'Bushing (BSPT)',                           thumb:'sub_category/threaded/低压螺纹管件/低压补心（BSPT）.png' },
-
-            { name:'Hex Nipple (NPT)',                         thumb:'sub_category/threaded/低压螺纹管件/低压六角对丝（NPT）.png' },
-            { name:'Hex Hose Connector (NPT)',                 thumb:'sub_category/threaded/低压螺纹管件/低压六角皮管接头（NPT）.png' },
-            { name:'Female Cross (NPT)',                       thumb:'sub_category/threaded/低压螺纹管件/低压内丝四通（NPT）.png' },
-            { name:'Female Cap (NPT)',                         thumb:'sub_category/threaded/低压螺纹管件/低压内丝管帽（NPT）.png' },
-            { name:'Female Coupling (NPT)',                    thumb:'sub_category/threaded/低压螺纹管件/低压内丝管箍（NPT）.png' },
-            { name:'Male-Female Elbow (NPT)',                  thumb:'sub_category/threaded/低压螺纹管件/低压内外丝弯头（NPT）.png' },
-            { name:'Male-Female Union (NPT)',                  thumb:'sub_category/threaded/低压螺纹管件/低压内外丝活接头（NPT）.png' },
-            { name:'Reducing Hex Nipple (NPT)',                thumb:'sub_category/threaded/低压螺纹管件/低压变径六角对丝（NPT）.png' },
-            { name:'Reducing Female Socket (NPT)',             thumb:'sub_category/threaded/低压螺纹管件/低压变径内丝（NPT）.png' },
-            { name:'Gasket Union (NPT)',                       thumb:'sub_category/threaded/低压螺纹管件/低压垫片活接头（NPT）.png' },
-            { name:'Bushing (NPT)',                            thumb:'sub_category/threaded/低压螺纹管件/低压补心（NPT）.png' },
-
-            { name:'Spiral Nozzle SPJT',                       thumb:'sub_category/threaded/低压螺纹管件/螺旋喷头SPJT.png' },
-            { name:'Spiral Nozzle SPJT (Sand Finish)',         thumb:'sub_category/threaded/低压螺纹管件/螺旋喷头SPJT（砂面）.png' }
-          ]
-        },
-
-        {
-          key:'cs-high',
-          name:'Carbon Steel Threaded (High-Pressure)',
-          note:'Elbows · Tees · Couplings · Plugs · Bushings · Unions',
-          id:'threaded-cs-high',
-          thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢螺纹三通（BSPT-NPT）.png',
-          items: [
-            { name:'Hex Flange Plug (CS)',                     thumb:'sub_category/threaded/碳钢高压螺纹管件/碳钢外六角法兰面堵头.png' },
-            { name:'Hex Socket Plug (Forged CS)',              thumb:'sub_category/threaded/碳钢高压螺纹管件/碳钢锻造内六角堵头.png' },
-            { name:'Half Coupling (BSPT/NPT · CS)',            thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢半螺纹管箍(BSPTNPT).png' },
-            { name:'Square Plug (BSPT/NPT · CS)',              thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢四方堵(BSPT、NPT).png' },
-            { name:'Male Nipple · Single End (BSPT/NPT · CS)', thumb:'sub_category/threaded/碳钢高压螺纹管件/碳钢单头螺纹管外丝（BSPT-NPT）.png' },
-            { name:'Male Nipple · Double End (BSPT/NPT · CS)', thumb:'sub_category/threaded/碳钢高压螺纹管件/碳钢双头螺纹管外丝（BSPT-NPT）.png' },
-            { name:'Hex Nipple (BSPT/NPT · CS)',               thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢螺纹六角外丝（BSPT-NPT）.png' },
-            { name:'Elbow (BSPT/NPT · CS)',                    thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢螺纹弯头（BSPT-NPT）.png' },
-            { name:'Tee (BSPT/NPT · CS)',                      thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢螺纹三通（BSPT-NPT）.png' },
-            { name:'Union (BSPT/NPT · CS)',                    thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢螺纹活接头（BSPT-NPT）.png' },
-            { name:'Cap (BSPT/NPT · CS)',                      thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢螺纹管帽（BSPT-NPT）.png' },
-            { name:'Coupling (BSPT/NPT · CS)',                 thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢螺纹管箍（BSPT-NPT）.png' },
-            { name:'Bushing (BSPT · CS)',                      thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢补心（BSPT）.png' },
-            { name:'Bushing (NPT · CS)',                       thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢补心（NPT）.png' },
-            { name:'Hex Plug (BSPT/NPT · CS)',                 thumb:'sub_category/threaded/碳钢高压螺纹管件/碳钢外六角堵头（BSPT、NPT）.png' }
-          ]
-        },
-
-        {
-          key:'ss-high',
-          name:'Stainless Threaded (High-Pressure)',
-          note:'Elbows · Tees · Couplings · Plugs · Bushings · Unions',
-          id:'threaded-ss-high',
-          thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢螺纹四通（NPT）.png',
-          items: [
-            { name:'Hex Nipple (BSPT · SS)',                   thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢六角对丝(BSPT).png' },
-            { name:'Hex Nipple (NPT · SS)',                    thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢六角对丝(NPT).png' },
-
-            { name:'Double-Ended Male 50mm (BSPT · SS)',       thumb:'sub_category/threaded/高压螺纹管件/高压双头外丝50MM(BSPT).png' },
-            { name:'Double-Ended Male 75mm (BSPT · SS)',       thumb:'sub_category/threaded/高压螺纹管件/高压双头外丝75MM(BSPT).png' },
-            { name:'Double-Ended Male 100mm (BSPT · SS)',      thumb:'sub_category/threaded/高压螺纹管件/高压双头外丝100MM(BSPT).png' },
-            { name:'Double-Ended Male 150mm (BSPT · SS)',      thumb:'sub_category/threaded/高压螺纹管件/高压双头外丝150MM(BSPT).png' },
-            { name:'Double-Ended Male 200mm (BSPT · SS)',      thumb:'sub_category/threaded/高压螺纹管件/高压双头外丝200MM(BSPT).png' },
-
-            { name:'Single-Ended Male 50mm (BSPT · SS)',       thumb:'sub_category/threaded/高压螺纹管件/高压单头外丝50MM(BSPT).png' },
-            { name:'Single-Ended Male 75mm (BSPT · SS)',       thumb:'sub_category/threaded/高压螺纹管件/高压单头外丝75MM(BSPT).png' },
-            { name:'Single-Ended Male 100mm (BSPT · SS)',      thumb:'sub_category/threaded/高压螺纹管件/高压单头外丝100MM（BSPT）.png' },
-            { name:'Single-Ended Male 150mm (BSPT · SS)',      thumb:'sub_category/threaded/高压螺纹管件/高压单头外丝150MM(BSPT).png' },
-
-            { name:'Hex Nipple (BSPT · SS) — alt',             thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢六角对丝（BSPT）.png' },
-            { name:'Hex Nipple (NPT · SS) — alt',              thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢六角对丝（NPT）.png' },
-
-            { name:'Female Tee (BSPT · SS)',                   thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢内丝三通（BSPT）.png' },
-            { name:'Female Tee (NPT · SS)',                    thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢内丝三通（NPT）.png' },
-            { name:'Female Elbow (BSPT · SS)',                 thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢内丝弯头（BSPT）.png' },
-            { name:'Female Elbow (NPT · SS)',                  thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢内丝弯头（NPT）.png' },
-
-            { name:'Square Plug (BSPT · SS)',                  thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢四方堵头（BSPT）.png' },
-            { name:'Square Plug (NPT · SS)',                   thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢四方堵头（NPT）.png' },
-            { name:'Hex Socket Plug (BSPT · SS)',              thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢六角堵头（BSPT）.png' },
-            { name:'Hex Socket Plug (NPT · SS)',               thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢六角堵头（NPT）.png' },
-
-            { name:'Gasket Union (BSPT · SS)',                 thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢垫片活接头（BSPT）.png' },
-            { name:'Half Coupling (BSPT · SS)',                thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢螺纹半管箍（BSPT）.png' },
-
-            { name:'Female Cross (BSPT · SS)',                 thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢螺纹四通（BSPT）.png' },
-            { name:'Female Cross (NPT · SS)',                  thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢螺纹四通（NPT）.png' },
-            { name:'Female Cap (BSPT · SS)',                   thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢螺纹管帽（BSPT）.png' },
-            { name:'Female Cap (NPT · SS)',                    thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢螺纹管帽（NPT）.png' },
-            { name:'Female Coupling (BSPT · SS)',              thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢螺纹管箍（BSPT）.png' },
-            { name:'Female Coupling (NPT · SS)',               thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢螺纹管箍（NPT）.png' },
-
-            { name:'Bushing (BSPT · SS)',                      thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢补心（BSPT）.png' },
-            { name:'Bushing (NPT · SS)',                       thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢补心（NPT）.png' },
-
-            { name:'BSPT Elbow (Male-Female · HP)',            thumb:'sub_category/threaded/高压螺纹管件/高压内外丝弯头BSPT.png' },
-            { name:'Branch Outlet (Threaded · BSPT)',          thumb:'sub_category/threaded/高压螺纹管件/不锈钢螺纹支管台（BSPT）.png' },
-            { name:'Branch Outlet (Threaded · NPT)',           thumb:'sub_category/threaded/高压螺纹管件/不锈钢螺纹支管台（NPT）.png' },
-
-            { name:'Ball-Surface Union (BSPT · HP)',           thumb:'sub_category/threaded/高压螺纹管件/高压球面活接头（BSPT）.png' }
-          ]
-        }
-      ]
-    },
-
-
-    /* 3) FLANGES — unchanged */
-    'flanges': {
-      title: 'Flanges',
-      subtitle: 'Slip-On · Weld Neck · Blind · Threaded · Plate · Gaskets',
-      children: [
-        { name:'Stainless Branch Outlet (Flanged)', id:'flg-branch-outlet', thumb:'sub_category/flanges/不锈钢法兰支管台.png' },
-        { name:'PTFE Flange Gasket',               id:'flg-ptfe-gasket',    thumb:'sub_category/flanges/法兰四氟垫片.png' },
-        { name:'Plate Slip-On Flange PN6',         id:'flg-so-pn6',         thumb:'sub_category/flanges/机械部板式平焊法兰PN6.png' },
-        { name:'Plate Slip-On Flange PN10',        id:'flg-so-pn10',        thumb:'sub_category/flanges/机械部板式平焊法兰PN10.png' },
-        { name:'Plate Slip-On Flange PN16',        id:'flg-so-pn16',        thumb:'sub_category/flanges/机械部板式平焊法兰PN16.png' },
-        { name:'Plate Slip-On Flange PN25',        id:'flg-so-pn25',        thumb:'sub_category/flanges/机械部板式平焊法兰PN25.png' }
-      ]
-    },
-
-    /* 4) VALUES — unchanged */
-    'values': {
-      title: 'Valves',
-      subtitle: 'Cast / Forged · Threaded / Socket-Weld / Flanged · Stainless & Carbon',
-      children: [
-        /* Cast ball valves */
-        { name:'Cast 1-Piece Ball Valve (Light)',   id:'val-cast-1pc-light',  thumb:'sub_category/values/铸造一片式球阀（轻型）.png' },
-        { name:'Cast 1-Piece Ball Valve (Heavy)',   id:'val-cast-1pc-heavy',  thumb:'sub_category/values/铸造一片式球阀（重型）.png' },
-        { name:'Cast 2-Piece Ball Valve (Light)',   id:'val-cast-2pc-light',  thumb:'sub_category/values/铸造二片式球阀（轻型）.png' },
-        { name:'Cast 2-Piece Ball Valve (Medium)',  id:'val-cast-2pc-medium', thumb:'sub_category/values/铸造二片式球阀（中型）.png' },
-        { name:'Cast 2-Piece Ball Valve (Heavy)',   id:'val-cast-2pc-heavy',  thumb:'sub_category/values/铸造二片式球阀（重型）.png' },
-        { name:'Cast 3-Piece Ball Valve (Light)',   id:'val-cast-3pc-light',  thumb:'sub_category/values/铸造三片式球阀（轻型）.png' },
-        { name:'Cast 3-Piece Ball Valve (Medium)',  id:'val-cast-3pc-medium', thumb:'sub_category/values/铸造三片式球阀（中型）.png' },
-        { name:'Cast 3-Piece Ball Valve (Heavy)',   id:'val-cast-3pc-heavy',  thumb:'sub_category/values/铸造三片式球阀（重型）.png' },
-        { name:'3-Piece Welded Ball Valve (Light)', id:'val-3pc-weld-light',  thumb:'sub_category/values/铸造三片式焊接球阀（轻型）.png' },
-        { name:'3-Piece Welded Ball Valve (Heavy)', id:'val-3pc-weld-heavy',  thumb:'sub_category/values/铸造三片式焊接球阀（重型）.png' },
-        { name:'Wafer One-Piece Ball Valve',        id:'val-wafer-1pc',       thumb:'sub_category/values/蝶形一片式球阀.png' },
-
-        /* Cast stainless valves & strainers */
-        { name:'Gate Valve (Cast Stainless)',               id:'val-cast-ss-gate',    thumb:'sub_category/values/铸造不锈钢闸阀.png' },
-        { name:'Vertical Check Valve (Cast Stainless)',     id:'val-cast-ss-vcheck',  thumb:'sub_category/values/铸造不锈钢立式止回阀.png' },
-        { name:'Horizontal Check Valve (Low-Pressure SS)',  id:'val-lp-ss-hcheck',    thumb:'sub_category/values/低压不锈钢卧式止回阀.png' },
-        { name:'Y-Strainer (Cast Stainless)',               id:'val-cast-ss-ystr',    thumb:'sub_category/values/铸造不锈钢Y型过滤器.png' },
-
-        /* Forged steel — socket-weld */
-        { name:'Gate Valve (Forged · SW)',   id:'val-forged-sw-gate',  thumb:'sub_category/values/锻钢承插焊闸阀.png' },
-        { name:'Globe Valve (Forged · SW)',  id:'val-forged-sw-globe', thumb:'sub_category/values/锻钢承插焊截止阀.png' },
-        { name:'Check Valve (Forged · SW)',  id:'val-forged-sw-check', thumb:'sub_category/values/承插焊锻钢止回阀.png' },
-
-        /* Forged steel — threaded */
-        { name:'Gate Valve (Forged · Threaded)',  id:'val-forged-thd-gate',  thumb:'sub_category/values/锻钢螺纹闸阀.png' },
-        { name:'Globe Valve (Forged · Threaded)', id:'val-forged-thd-globe', thumb:'sub_category/values/锻钢螺纹截止阀.png' },
-
-        /* Forged steel — flanged */
-        { name:'Gate Valve (Forged · Flanged)',   id:'val-forged-flg-gate',   thumb:'sub_category/values/锻钢法兰闸阀.png' },
-        { name:'Globe Valve (Forged · Flanged)',  id:'val-forged-flg-globe',  thumb:'sub_category/values/锻钢法兰截止阀.png' },
-        { name:'Check Valve (Forged · Flanged)',  id:'val-forged-flg-check',  thumb:'sub_category/values/锻钢法兰止回阀.png' },
-        { name:'Strainer (Forged · Flanged)',     id:'val-forged-flg-strain', thumb:'sub_category/values/锻钢法兰过滤器.png' },
-        { name:'2-Piece Ball Valve (Forged · Flanged)', id:'val-forged-flg-2pc', thumb:'sub_category/values/锻钢法兰二片式球阀.png' },
-
-        /* High-pressure stainless — threaded */
-        { name:'Gate Valve (HP SS · Threaded)',   id:'val-hpss-thd-gate',   thumb:'sub_category/values/高压不锈钢螺纹闸阀.png' },
-        { name:'Globe Valve (HP SS · Threaded)',  id:'val-hpss-thd-globe',  thumb:'sub_category/values/高压不锈钢螺纹截止阀.png' },
-        { name:'Check Valve (HP SS · Threaded)',  id:'val-hpss-thd-check',  thumb:'sub_category/values/高压不锈钢螺纹止回阀.png' },
-        { name:'Strainer (HP SS · Threaded)',     id:'val-hpss-thd-strain', thumb:'sub_category/values/高压不锈钢螺纹过滤器.png' },
-
-        /* High-pressure stainless — socket-weld & flanged */
-        { name:'Gate Valve (HP SS · SW)',         id:'val-hpss-sw-gate',    thumb:'sub_category/values/高压不锈钢承插焊闸阀.png' },
-        { name:'Globe Valve (HP SS · SW)',        id:'val-hpss-sw-globe',   thumb:'sub_category/values/高压不锈钢承插焊截止阀.png' },
-        { name:'Gate Valve (HP SS · Flanged)',    id:'val-hpss-flg-gate',   thumb:'sub_category/values/高压不锈钢法兰闸阀.png' },
-        { name:'Globe Valve (HP SS · Flanged)',   id:'val-hpss-flg-globe',  thumb:'sub_category/values/高压不锈钢法兰截止阀.png' }
-      ]
-    }
-  };
-
-const keys = ['weld','threaded','flanges','values'];
-
-  // --- URL & legacy mapping ---
-  const params = new URLSearchParams(location.search);
-  let rawType = params.get('type');
-  if (rawType && LEGACY_MAP[rawType]) {
-    const newType = LEGACY_MAP[rawType];
-    params.set('type', newType);
-    const newUrl = `${location.pathname}?${params.toString()}`;
-    history.replaceState({type:newType}, '', newUrl);
-  }
-  const currentTypeInit  = params.get('type')  || 'weld';
-  const currentChildInit = params.get('child') || null; // 现在不限于 weld
-
-  const titleEl = document.getElementById('title');
-  const subtitleEl = document.getElementById('subtitle');
-  const listEl = document.getElementById('list');
-  const treeEl = document.getElementById('tree');
-
-  let currentType  = currentTypeInit;
-  let currentChild = currentChildInit;
-
-  // 工具：取子项与是否存在 items
-  function getChild(typeKey, childKey){
-    const data = CATALOG[typeKey];
-    if (!data) return null;
-    return (data.children||[]).find(c => (c.key||c.id||c.name) === childKey) || null;
-  }
-  function childHasItems(typeKey, childKey){
-    const c = getChild(typeKey, childKey);
-    return !!(c && Array.isArray(c.items) && c.items.length);
-  }
-
-  // ========== RIGHT PANE RENDER ==========
-  function renderRight(typeKey, childKey=null){
-    const data = CATALOG[typeKey];
-    if (!data) return;
-
-    // 若传入 child 且该子类存在 items，则渲染二级视图（适用于 weld、threaded 等任何分类）
-    if (childKey && childHasItems(typeKey, childKey)) {
-      const child = getChild(typeKey, childKey);
-
-      titleEl.textContent   = child.name;
-      subtitleEl.textContent= child.note || data.subtitle || '';
-      listEl.innerHTML = '';
-
-      // 面包屑
-      document.querySelector('.crumb').innerHTML =
-        `<a href="index.html#categories">← Back to Categories</a> · 
-         <a href="?type=${encodeURIComponent(typeKey)}">${data.title}</a> · 
-         <span>${child.name}</span>`;
-
-      (child.items||[]).forEach(it=>{
-        const a = document.createElement('a');
-        a.className = 'vitem';
-        a.href = `detail.html?id=${encodeURIComponent(it.id||it.name)}`;
-        a.innerHTML = `
-          <div class='vthumb'>
-            <img src="${it.thumb||''}" alt="${it.name||''}" loading="lazy" decoding="async" />
-          </div>
-          <div class='vbody'>
-            <div class='vtitle'>${it.name}</div>
-          </div>
-          <div class='vgo'>View <span>›</span></div>`;
-        listEl.appendChild(a);
-      });
-      return; // 已渲染二级
-    }
-
-    // 一级视图：展示该类的 children 列表（原样 + 对有 items 的子类改为内部路由）
-    titleEl.textContent = data.title;
-    subtitleEl.textContent = data.subtitle;
-    document.querySelector('.crumb').innerHTML =
-      `<a href="index.html#categories">← Back to Categories</a>`;
-
-    listEl.innerHTML = '';
-    (data.children||[]).forEach(it=>{
-      const childKey2 = it.key || it.id || it.name;
-      const a = document.createElement('a');
-      a.className = 'vitem';
-
-      if (Array.isArray(it.items) && it.items.length){
-        // 该子类支持二级
-        a.href = `?type=${encodeURIComponent(typeKey)}&child=${encodeURIComponent(childKey2)}`;
-      } else {
-        // 没有 items：维持原 detail.html 行为
-        a.href = `detail.html?id=${encodeURIComponent(it.id||it.key||it.name)}`;
+  <!-- ===== Contact（放在页脚下面，单列表单，无左侧信息） ===== -->
+  <section id="contact" class="section" aria-label="Contact NexPipe" style="padding-top:20px;padding-bottom:48px">
+    <style>
+      /* 局部样式，避免影响全站 */
+      .cform-wrap{max-width:1200px;margin:0 auto}
+      .cform-card{background:var(--card);border-radius:18px;box-shadow:0 14px 40px rgba(15,23,42,.10);padding:22px;border:1px solid #e5e7eb}
+      .cform-head{margin:0 0 14px;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+      .cform-sub{margin:0;color:var(--muted);font-size:14px}
+      .cform-grid{display:grid;gap:14px}
+      .cform-field{display:grid;gap:6px}
+      .cform-label{font-weight:700;color:#0b1220}
+      .cform-input,.cform-textarea{
+        width:100%;padding:12px 14px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;outline:none;font-size:16px;
+        transition:box-shadow .15s ease,border-color .15s ease
       }
+      .cform-input:hover,.cform-textarea:hover{border-color:#94a3b8}
+      .cform-input:focus,.cform-textarea:focus{border-color:#0f172a;box-shadow:0 0 0 3px rgba(15,23,42,.12)}
+      .cform-textarea{min-height:140px;resize:vertical}
+      .cform-actions{margin-top:4px}
+      .cform-btn{
+        width:100%;height:48px;border-radius:14px;border:1px solid var(--brand);background:var(--brand);color:#fff;
+        font-weight:800;letter-spacing:.2px;cursor:pointer;transition:transform .08s,box-shadow .15s,background .15s,border-color .15s
+      }
+      .cform-btn:hover{box-shadow:0 10px 26px rgba(15,23,42,.18);background:#0b1220;border-color:#0b1220}
+      .cform-btn:active{transform:translateY(1px)}
+      .cform-ok{display:none;margin:10px 0 0;color:#16a34a}
+      @media (max-width:640px){.cform-card{padding:18px}}
+    </style>
 
-      a.innerHTML = `
-        <div class='vthumb'>
-          <img src="${it.thumb || ''}" alt="${it.name || ''}" loading="lazy" decoding="async" />
+    <div class="container">
+      <div class="cform-wrap">
+        <div class="cform-card">
+          <div class="cform-head">
+            <h2 style="margin:0">Contact</h2>
+            <p class="cform-sub">We’ll get back within one business day.</p>
+          </div>
+
+          <form id="contactForm" class="cform-grid">
+            <div class="cform-field">
+              <label for="cf-name" class="cform-label">Name</label>
+              <input id="cf-name" name="name" type="text" class="cform-input" required />
+            </div>
+
+            <div class="cform-field">
+              <label for="cf-email" class="cform-label">Email</label>
+              <input id="cf-email" name="email" type="email" class="cform-input" required />
+            </div>
+
+            <div class="cform-field">
+              <label for="cf-phone" class="cform-label">Phone (optional)</label>
+              <input id="cf-phone" name="phone" type="tel" class="cform-input" />
+            </div>
+
+            <div class="cform-field">
+              <label for="cf-message" class="cform-label">Message</label>
+              <textarea id="cf-message" name="message" class="cform-textarea" required
+                        placeholder="Sizes/specs/qty or brief description…"></textarea>
+            </div>
+
+            <div class="cform-actions">
+              <button type="submit" class="cform-btn">Send</button>
+              <p id="cf-ok" class="cform-ok">Thanks! Opening your mail app…</p>
+            </div>
+          </form>
         </div>
-        <div class='vbody'>
-          <div class='vtitle'>${it.name}</div>
-          <p class='vnote'>${it.note||''}</p>
-        </div>
-        <div class='vgo'>${(Array.isArray(it.items)&&it.items.length)?'Open':'View'} <span>›</span></div>`;
-      listEl.appendChild(a);
-    });
-  }
+      </div>
+    </div>
 
-  // ========== LEFT TREE ==========
-  function buildTree(selectedType){
-    treeEl.innerHTML = '';
-    keys.forEach(key=>{
-      const li = document.createElement('li');
-
-      // 对 values：不展示“展开”态
-      const isValues = key === 'values' || key === 'flanges';
-      li.className = 'node-wrap' + ((key===selectedType && !isValues) ? ' open' : '');
-
-      const node = document.createElement('div');
-      node.className = 'node';
-      node.innerHTML = `<span>${CATALOG[key].title}</span><span>${(key===selectedType && !isValues)?'−':'+'}</span>`;
-
-      // 点击分类标题
-      node.addEventListener('click', ()=>{
-        if (key !== currentType) {
-          currentType  = key;
-          currentChild = null; // 切换类时清空 child
-          const p = new URLSearchParams(location.search);
-          p.set('type', currentType);
-          p.delete('child');
-          history.pushState({type: currentType}, '', `?${p.toString()}`);
-          renderRight(currentType, currentChild);
-          buildTree(currentType);
-        } else {
-          // 只有非 values 才允许折叠/展开
-          if (!isValues) {
-            li.classList.toggle('open');
-            node.querySelector('span:last-child').textContent =
-              li.classList.contains('open') ? '−' : '+';
-          }
-        }
-      });
-      li.appendChild(node);
-
-      // 子链接：values 不创建 children（不展开）
-      if (!isValues) {
-        const kids = document.createElement('div');
-        kids.className = 'children';
-        (CATALOG[key].children||[]).forEach(child=>{
-          const a = document.createElement('a');
-          const childKey = child.key || child.id || child.name;
-          const hasItems = Array.isArray(child.items) && child.items.length;
-
-          if (hasItems){
-            // 有二级数据：内部路由进入 ?type=...&child=...
-            a.href = `?type=${encodeURIComponent(key)}&child=${encodeURIComponent(childKey)}`;
-            if (currentType===key && currentChild===childKey) a.style.borderColor = 'var(--accent)';
-            a.addEventListener('click', (e)=>{
-              e.preventDefault();
-              currentType  = key;
-              currentChild = childKey;
-              const p = new URLSearchParams();
-              p.set('type', key);
-              p.set('child', childKey);
-              history.pushState({type:key, child:childKey}, '', `?${p.toString()}`);
-              renderRight(key, childKey);
-              buildTree(key);
-              document.getElementById('list').scrollIntoView({behavior:'smooth'});
-            });
-          } else {
-            // 无二级数据：维持你原来的 detail.html 行为
-            a.href = `detail.html?id=${encodeURIComponent(child.id||child.key||child.name)}`;
-            a.addEventListener('click', (e)=>{
-              if(key!==currentType){
-                e.preventDefault();
-                currentType = key;
-                currentChild = null;
-                const p = new URLSearchParams();
-                p.set('type', currentType);
-                history.pushState({type: currentType}, '', `?${p.toString()}`);
-                renderRight(currentType);
-                buildTree(currentType);
-                document.getElementById('list').scrollIntoView({behavior:'smooth'});
-              }
-            });
-          }
-
-          a.innerHTML = `<span>${child.name}</span><span>›</span>`;
-          kids.appendChild(a);
+    <script>
+      // 仅绑定新表单，不影响其他脚本
+      (function(){
+        const form = document.getElementById('contactForm');
+        const ok   = document.getElementById('cf-ok');
+        if(!form) return;
+        form.addEventListener('submit', function(e){
+          e.preventDefault();
+          const name  = document.getElementById('cf-name')?.value?.trim() || '';
+          const email = document.getElementById('cf-email')?.value?.trim() || '';
+          const phone = document.getElementById('cf-phone')?.value?.trim() || '';
+          const msg   = document.getElementById('cf-message')?.value?.trim() || '';
+          const subject = encodeURIComponent(`Inquiry from ${name}`);
+          const body    = encodeURIComponent(
+            `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${msg}\n`
+          );
+          if(ok) ok.style.display = 'block';
+          window.location.href = `mailto:sales@nexpipeusa.com?subject=${subject}&body=${body}`;
         });
-        li.appendChild(kids);
-      }
+      })();
+    </script>
+  </section>
+  <!-- ===== /Contact ===== -->
 
-      treeEl.appendChild(li);
+  <script>
+    // Simple mobile menu
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    menuBtn?.addEventListener('click',()=>{
+      const show = navLinks.style.display === 'flex';
+      navLinks.style.display = show ? 'none' : 'flex';
+      navLinks.style.flexDirection = 'column';
+      navLinks.style.gap = '12px';
     });
-  }
-  // ===== Init =====
-  renderRight(currentType, currentChild);
-  buildTree(currentType);
-
-  /* ---- Block navigation to detail.html (keep structure intact) ---- */
-  (function blockDetailNav(){
-    document.addEventListener('click', function(ev){
-      const a = ev.target.closest('a');
-      if(!a) return;
-      const raw = a.getAttribute('href') || '';
-      let hit = false;
-
-      // 任何 ?type=...&child=... 的二级入口都不拦截（不仅是 weld）
-      if (/^\?[^#]*\btype=[^&]+&child=/.test(raw)) return;
-
-      if (raw.startsWith('detail.html')) hit = true;
-      else {
-        try{
-          const u = new URL(a.href, location.href);
-          if (u.pathname.endsWith('/detail.html') || u.pathname.endsWith('detail.html')) hit = true;
-        }catch(e){}
-      }
-      if (hit){
-        ev.preventDefault();
-        a.blur();
-        // TODO: 这里可以弹出抽屉/Modal；从 raw 或 a.href 的参数里取 id
-      }
-    }, true);
-  })();
-
-  // Popstate
-  window.onpopstate = (ev)=>{
-    const sp = new URLSearchParams(location.search);
-    currentType  = (ev.state && ev.state.type)  || sp.get('type')  || 'weld';
-    currentChild = (ev.state && ev.state.child) || sp.get('child') || null;
-    renderRight(currentType, currentChild);
-    buildTree(currentType);
-  };
-
-  // Mobile menu
-  const menuBtn = document.getElementById('menuBtn');
-  const navLinks = document.getElementById('navLinks');
-  menuBtn?.addEventListener('click',()=>{
-    const show = navLinks.style.display === 'flex';
-    navLinks.style.display = show ? 'none' : 'flex';
-    navLinks.style.flexDirection = 'column';
-    navLinks.style.gap = '12px';
-  });
-</script>
+  </script>
 </body>
 </html>
