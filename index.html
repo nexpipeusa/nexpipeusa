@@ -507,10 +507,10 @@
           <li><a href="#">Materials & Standards</a></li>
           <li><a href="#">Shipping & Returns</a></li>
           <li><a href="#">Invoices & Taxes</a></li>
-          <li><a href="#">Contact Us</a></li>
+          <li><a href="#contact">Contact Us</a></li>
         </ul>
       </div>
-      <div id="contact">
+      <div id="contact-mini">
         <strong>Contact</strong>
         <ul style="list-style:none;padding:0;margin:8px 0 0;display:grid;gap:6px">
           <li>📍 Houston, TX</li>
@@ -521,6 +521,98 @@
     </div>
     <div class="container copyright">© 2025 NEXPIPE. For demo only.</div>
   </footer>
+
+  <!-- ===== Contact（放在页脚下面，单列表单，无左侧信息） ===== -->
+  <section id="contact" class="section" aria-label="Contact NexPipe" style="padding-top:20px;padding-bottom:48px">
+    <style>
+      /* 局部样式，避免影响全站 */
+      .cform-wrap{max-width:1200px;margin:0 auto}
+      .cform-card{background:var(--card);border-radius:18px;box-shadow:0 14px 40px rgba(15,23,42,.10);padding:22px;border:1px solid #e5e7eb}
+      .cform-head{margin:0 0 14px;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+      .cform-sub{margin:0;color:var(--muted);font-size:14px}
+      .cform-grid{display:grid;gap:14px}
+      .cform-field{display:grid;gap:6px}
+      .cform-label{font-weight:700;color:#0b1220}
+      .cform-input,.cform-textarea{
+        width:100%;padding:12px 14px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;outline:none;font-size:16px;
+        transition:box-shadow .15s ease,border-color .15s ease
+      }
+      .cform-input:hover,.cform-textarea:hover{border-color:#94a3b8}
+      .cform-input:focus,.cform-textarea:focus{border-color:#0f172a;box-shadow:0 0 0 3px rgba(15,23,42,.12)}
+      .cform-textarea{min-height:140px;resize:vertical}
+      .cform-actions{margin-top:4px}
+      .cform-btn{
+        width:100%;height:48px;border-radius:14px;border:1px solid var(--brand);background:var(--brand);color:#fff;
+        font-weight:800;letter-spacing:.2px;cursor:pointer;transition:transform .08s,box-shadow .15s,background .15s,border-color .15s
+      }
+      .cform-btn:hover{box-shadow:0 10px 26px rgba(15,23,42,.18);background:#0b1220;border-color:#0b1220}
+      .cform-btn:active{transform:translateY(1px)}
+      .cform-ok{display:none;margin:10px 0 0;color:#16a34a}
+      @media (max-width:640px){.cform-card{padding:18px}}
+    </style>
+
+    <div class="container">
+      <div class="cform-wrap">
+        <div class="cform-card">
+          <div class="cform-head">
+            <h2 style="margin:0">Contact</h2>
+            <p class="cform-sub">We’ll get back within one business day.</p>
+          </div>
+
+          <form id="contactForm" class="cform-grid">
+            <div class="cform-field">
+              <label for="cf-name" class="cform-label">Name</label>
+              <input id="cf-name" name="name" type="text" class="cform-input" required />
+            </div>
+
+            <div class="cform-field">
+              <label for="cf-email" class="cform-label">Email</label>
+              <input id="cf-email" name="email" type="email" class="cform-input" required />
+            </div>
+
+            <div class="cform-field">
+              <label for="cf-phone" class="cform-label">Phone (optional)</label>
+              <input id="cf-phone" name="phone" type="tel" class="cform-input" />
+            </div>
+
+            <div class="cform-field">
+              <label for="cf-message" class="cform-label">Message</label>
+              <textarea id="cf-message" name="message" class="cform-textarea" required
+                        placeholder="Sizes/specs/qty or brief description…"></textarea>
+            </div>
+
+            <div class="cform-actions">
+              <button type="submit" class="cform-btn">Send</button>
+              <p id="cf-ok" class="cform-ok">Thanks! Opening your mail app…</p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // 仅绑定新表单，不影响其他脚本
+      (function(){
+        const form = document.getElementById('contactForm');
+        const ok   = document.getElementById('cf-ok');
+        if(!form) return;
+        form.addEventListener('submit', function(e){
+          e.preventDefault();
+          const name  = document.getElementById('cf-name')?.value?.trim() || '';
+          const email = document.getElementById('cf-email')?.value?.trim() || '';
+          const phone = document.getElementById('cf-phone')?.value?.trim() || '';
+          const msg   = document.getElementById('cf-message')?.value?.trim() || '';
+          const subject = encodeURIComponent(`Inquiry from ${name}`);
+          const body    = encodeURIComponent(
+            `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${msg}\n`
+          );
+          if(ok) ok.style.display = 'block';
+          window.location.href = `mailto:sales@nexpipeusa.com?subject=${subject}&body=${body}`;
+        });
+      })();
+    </script>
+  </section>
+  <!-- ===== /Contact ===== -->
 
   <script>
     // Simple mobile menu
