@@ -1,6 +1,6 @@
 ## Hi there 👋
 
-Website for NextPipeUSA
+Website for NexPipeUSA
 
 <!--
 **nexpipeusa/nexpipeusa** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
