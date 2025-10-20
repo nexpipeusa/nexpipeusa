@@ -195,7 +195,7 @@
   <div class="container hero__wrap">
     <div class="card" style="overflow:hidden">
       <div class="hero-photo"
-          style="--hero:url('image/main.png');"
+          style="--hero:url('image/main_1.png');"
           aria-label="NEXPIPE letters formed by flanges & pipe fittings at refinery sunset">
       </div>
       <div class="card__content">
@@ -465,72 +465,73 @@
 
   <!-- ===== Contact（放在页脚下面，单列表单，无左侧信息） ===== -->
 
-  <section id="contact" class="section" aria-label="Contact NexPipe" style="padding-top:20px;padding-bottom:48px" >
-    <style>
-      /* 局部样式，避免影响全站 */
-      .cform-wrap{max-width:1200px;margin:0 auto}
-      .cform-card{background:var(--card);border-radius:18px;box-shadow:0 14px 40px rgba(15,23,42,.10);padding:22px;border:1px solid #e5e7eb}
-      .cform-head{margin:0 0 14px;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
-      .cform-sub{margin:0;color:var(--muted);font-size:14px}
-      .cform-grid{display:grid;gap:14px}
-      .cform-field{display:grid;gap:6px}
-      .cform-label{font-weight:700;color:#0b1220}
-      .cform-input,.cform-textarea{
-        width:100%;padding:12px 14px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;outline:none;font-size:16px;
-        transition:box-shadow .15s ease,border-color .15s ease
-      }
-      .cform-input:hover,.cform-textarea:hover{border-color:#94a3b8}
-      .cform-input:focus,.cform-textarea:focus{border-color:#0f172a;box-shadow:0 0 0 3px rgba(15,23,42,.12)}
-      .cform-textarea{min-height:140px;resize:vertical}
-      .cform-actions{margin-top:4px}
-      .cform-btn{
-        width:100%;height:48px;border-radius:14px;border:1px solid var(--brand);background:var(--brand);color:#fff;
-        font-weight:800;letter-spacing:.2px;cursor:pointer;transition:transform .08s,box-shadow .15s,background .15s,border-color .15s
-      }
-      .cform-btn:hover{box-shadow:0 10px 26px rgba(15,23,42,.18);background:#0b1220;border-color:#0b1220}
-      .cform-btn:active{transform:translateY(1px)}
-      .cform-ok{display:none;margin:10px 0 0;color:#16a34a}
-      @media (max-width:640px){.cform-card{padding:18px}}
-    </style>
+<section id="contact" class="section" aria-label="Contact NexPipe" style="padding-top:20px;padding-bottom:48px">
+  <style>
+    /* 仅作用于 Contact 模块 */
+    .cform-wrap{max-width:1200px;margin:0 auto}
+    .cform-title{font-size:22px;margin:0 0 14px}           /* 标题在卡片外 */
+    .cform-card{background:var(--card);border-radius:12px;box-shadow:var(--shadow);
+                padding:22px;border:1px solid #e5e7eb}
+    .cform-sub{margin:0;color:var(--muted);font-size:14px}
+    .cform-grid{display:grid;gap:14px}
+    .cform-field{display:grid;gap:6px}
+    .cform-label{font-weight:700;color:#0b1220}
+    .cform-input,.cform-textarea{
+      width:100%;padding:12px 14px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;outline:none;font-size:16px;
+      transition:box-shadow .15s ease,border-color .15s ease
+    }
+    .cform-input:hover,.cform-textarea:hover{border-color:#94a3b8}
+    .cform-input:focus,.cform-textarea:focus{border-color:#0f172a;box-shadow:0 0 0 3px rgba(15,23,42,.12)}
+    .cform-textarea{min-height:140px;resize:vertical}
+    .cform-actions{margin-top:4px}
+    .cform-btn{
+      width:100%;height:48px;border-radius:12px;border:1px solid var(--brand);background:var(--brand);color:#fff;
+      font-weight:800;letter-spacing:.2px;cursor:pointer;transition:transform .08s,box-shadow .15s,background .15s,border-color .15s
+    }
+    .cform-btn:hover{box-shadow:0 10px 26px rgba(15,23,42,.18);background:#0b1220;border-color:#0b1220}
+    .cform-btn:active{transform:translateY(1px)}
+    .cform-ok{display:none;margin:10px 0 0;color:#16a34a}
+    @media (max-width:640px){.cform-card{padding:18px}}
+  </style>
 
-    <div class="container">
-      <div class="cform-wrap">
-        <div class="cform-card">
-          <div class="cform-head">
-            <h2 style="margin:0">Contact</h2>
-            <p class="cform-sub">We’ll get back within one business day.</p>
+  <div class="container">
+    <!-- 标题在卡片外，跟 Popular Categories 一致 -->
+    <h2 class="cform-title">Contact</h2>
+
+    <div class="cform-wrap">
+      <div class="cform-card">
+        <p class="cform-sub" style="margin-bottom:12px">We’ll get back within one business day.</p>
+
+        <form id="contactForm" class="cform-grid">
+          <div class="cform-field">
+            <label for="cf-name" class="cform-label">Name</label>
+            <input id="cf-name" name="name" type="text" class="cform-input" required />
           </div>
 
-          <form id="contactForm" class="cform-grid">
-            <div class="cform-field">
-              <label for="cf-name" class="cform-label">Name</label>
-              <input id="cf-name" name="name" type="text" class="cform-input" required />
-            </div>
+          <div class="cform-field">
+            <label for="cf-email" class="cform-label">Email</label>
+            <input id="cf-email" name="email" type="email" class="cform-input" required />
+          </div>
 
-            <div class="cform-field">
-              <label for="cf-email" class="cform-label">Email</label>
-              <input id="cf-email" name="email" type="email" class="cform-input" required />
-            </div>
+          <div class="cform-field">
+            <label for="cf-phone" class="cform-label">Phone (optional)</label>
+            <input id="cf-phone" name="phone" type="tel" class="cform-input" />
+          </div>
 
-            <div class="cform-field">
-              <label for="cf-phone" class="cform-label">Phone (optional)</label>
-              <input id="cf-phone" name="phone" type="tel" class="cform-input" />
-            </div>
+          <div class="cform-field">
+            <label for="cf-message" class="cform-label">Message</label>
+            <textarea id="cf-message" name="message" class="cform-textarea" required
+                      placeholder="Sizes/specs/qty or brief description…"></textarea>
+          </div>
 
-            <div class="cform-field">
-              <label for="cf-message" class="cform-label">Message</label>
-              <textarea id="cf-message" name="message" class="cform-textarea" required
-                        placeholder="Sizes/specs/qty or brief description…"></textarea>
-            </div>
-
-            <div class="cform-actions">
-              <button type="submit" class="cform-btn">Send</button>
-              <p id="cf-ok" class="cform-ok">Thanks! Opening your mail app…</p>
-            </div>
-          </form>
-        </div>
+          <div class="cform-actions">
+            <button type="submit" class="cform-btn">Send</button>
+            <p id="cf-ok" class="cform-ok">Thanks! Opening your mail app…</p>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
 
     <script>
       // 仅绑定新表单，不影响其他脚本
