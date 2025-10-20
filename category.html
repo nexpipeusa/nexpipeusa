@@ -125,256 +125,305 @@
     'pipes-accessories': 'threaded'
   };
 
+  function safeSrc(path) {
+    // 按 / 切开，每段做 encodeURIComponent，再拼回去
+    return String(path)
+      .split('/')
+      .map(seg => encodeURIComponent(seg))
+      .join('/');
+  }
+
   /* ========= Catalog dataset =========
      只对 weld 增加二级 items；其它分类保持原样
   */
   const CATALOG = {
     /* 1) WELD — has 2nd-level items */
-    'weld': {
+    'weld':  {
       title: 'Welded Fittings',
-      subtitle: 'Butt-Weld & High-Pressure Socket-Weld · Carbon/Stainless · Schedules 10/40/80/160',
+      subtitle: 'Butt-Weld & High-Pressure Socket-Weld · Carbon/Stainless · Schedules 10/40/80',
       children: [
+        /* ========== 1) Butt Weld（暂时直接到叶子） ========== */
         {
-          key:'bw',
-          name:'Butt-Weld Fittings',
-          note:'Elbows · Tees · Reducers · Caps · Stub Ends',
-          id:'weld-bw',
-          thumb:'sub_category/weld/对焊管件/对焊45°弯头Sch40s（滚砂）.png',
+          key: 'butt',
+          name: 'Butt Weld',
+          note: 'Elbows · Tees · Reducers · Caps · Stub Ends',
+          id: 'weld-butt',
+          thumb: 'sub_category/Welded Fittings/Butt Weld/对焊45°弯头Sch40s（滚砂）.png',
           items: [
-            { name:'180° Elbow · Sch10s (Sandblasted)', thumb:'sub_category/weld/对焊管件/对焊180°弯头Sch10s（滚砂）.png' },
-            { name:'180° Elbow · Sch40s (Sandblasted)', thumb:'sub_category/weld/对焊管件/对焊180°弯头Sch40s（滚砂）.png' },
-            { name:'180° Elbow · Sch80s (Sandblasted)', thumb:'sub_category/weld/对焊管件/对焊180°弯头Sch80s（滚砂）.png' },
-            { name:'45° Elbow · Sch10s (Sandblasted)',  thumb:'sub_category/weld/对焊管件/对焊45°弯头Sch10s（滚砂）.png' },
-            { name:'45° Elbow · Sch40s (Sandblasted)',  thumb:'sub_category/weld/对焊管件/对焊45°弯头Sch40s（滚砂）.png' },
-            { name:'45° Elbow · Sch80s (Sandblasted)',  thumb:'sub_category/weld/对焊管件/对焊45°弯头Sch80s（滚砂）.png' },
-            { name:'LR Elbow · Sch10s (Sandblasted)',   thumb:'sub_category/weld/对焊管件/对焊长半径（LR）弯头Sch10s（滚砂）.png' },
-            { name:'LR Elbow · Sch40s (Sandblasted)',   thumb:'sub_category/weld/对焊管件/对焊长半径（LR）弯头Sch40s（滚砂）.png' },
-            { name:'LR Elbow · Sch80s (Sandblasted)',   thumb:'sub_category/weld/对焊管件/对焊长半径（LR）弯头Sch80s（滚砂）.png' },
-            { name:'SR Elbow · Sch10s (Sandblasted)',   thumb:'sub_category/weld/对焊管件/对焊短半径（SR）弯头Sch10s（滚砂）.png' },
-            { name:'SR Elbow · Sch40s (Sandblasted)',   thumb:'sub_category/weld/对焊管件/对焊短半径（SR）弯头Sch40s（滚砂）.png' },
-            { name:'SR Elbow · Sch80s (Sandblasted)',   thumb:'sub_category/weld/对焊管件/对焊短半径（SR）弯头Sch80s（滚砂）.png' },
-            { name:'Equal Tee · Sch10s (Sandblasted)',  thumb:'sub_category/weld/对焊管件/对焊三通Sch10s（滚砂）.png' },
-            { name:'Equal Tee · Sch40s (Sandblasted)',  thumb:'sub_category/weld/对焊管件/对焊三通Sch40s（滚砂）.png' },
-            { name:'Equal Tee · Sch80s (Sandblasted)',  thumb:'sub_category/weld/对焊管件/对焊三通Sch80s（滚砂）.png' },
-            { name:'Reducing Tee · Sch10s (Sandblasted)', thumb:'sub_category/weld/对焊管件/对焊异径三通Sch10s（滚砂）.png' },
-            { name:'Reducing Tee · Sch40s (Sandblasted)', thumb:'sub_category/weld/对焊管件/对焊异径三通Sch40s（滚砂）.png' },
-            { name:'Reducing Tee · Sch80s (Sandblasted)', thumb:'sub_category/weld/对焊管件/对焊异径三通Sch80s（滚砂）.png' },
-            { name:'Concentric Reducer · Sch10s (Sandblasted)', thumb:'sub_category/weld/对焊管件/对焊同心大小头Sch10s（滚砂）.png' },
-            { name:'Concentric Reducer · Sch40s (Sandblasted)', thumb:'sub_category/weld/对焊管件/对焊同心大小头Sch40s（滚砂）.png' },
-            { name:'Concentric Reducer · Sch80s (Sandblasted)', thumb:'sub_category/weld/对焊管件/对焊同心大小头Sch80s（滚砂）.png' },
-            { name:'Eccentric Reducer · Sch10s (Sandblasted)',  thumb:'sub_category/weld/对焊管件/对焊偏心大小头Sch10s（滚砂）.png' },
-            { name:'Eccentric Reducer · Sch40s (Sandblasted)',  thumb:'sub_category/weld/对焊管件/对焊偏心大小头Sch40s（滚砂）.png' },
-            { name:'Eccentric Reducer · Sch80s (Sandblasted)',  thumb:'sub_category/weld/对焊管件/对焊偏心大小头Sch80s（滚砂）.png' },
-            { name:'End Cap · Sch10s (Sandblasted)',     thumb:'sub_category/weld/对焊管件/对焊管帽Sch10s（滚砂）.png' },
-            { name:'End Cap · Sch40s (Sandblasted)',     thumb:'sub_category/weld/对焊管件/对焊管帽Sch40s（滚砂）.png' },
-            { name:'End Cap · Sch80s (Sandblasted)',     thumb:'sub_category/weld/对焊管件/对焊管帽Sch80s（滚砂）.png' },
-            { name:'Stub End · Sch10s (Machined)',       thumb:'sub_category/weld/对焊管件/翻边短节Sch10s（精车）.png' },
-            { name:'Stub End · Sch80s (Machined)',       thumb:'sub_category/weld/对焊管件/翻边短节Sch80s（精车）.png' }
+            { name:'180° Elbow · Sch10s (Sandblasted)', thumb:'sub_category/Welded Fittings/Butt Weld/对焊180°弯头Sch10s（滚砂）.png' },
+            { name:'180° Elbow · Sch40s (Sandblasted)', thumb:'sub_category/Welded Fittings/Butt Weld/对焊180°弯头Sch40s（滚砂）.png' },
+            { name:'180° Elbow · Sch80s (Sandblasted)', thumb:'sub_category/Welded Fittings/Butt Weld/对焊180°弯头Sch80s（滚砂）.png' },
+
+            { name:'45° Elbow · Sch10s (Sandblasted)',  thumb:'sub_category/Welded Fittings/Butt Weld/对焊45°弯头Sch10s（滚砂）.png' },
+            { name:'45° Elbow · Sch40s (Sandblasted)',  thumb:'sub_category/Welded Fittings/Butt Weld/对焊45°弯头Sch40s（滚砂）.png' },
+            { name:'45° Elbow · Sch80s (Sandblasted)',  thumb:'sub_category/Welded Fittings/Butt Weld/对焊45°弯头Sch80s（滚砂）.png' },
+
+            { name:'LR Elbow · Sch10s (Sandblasted)',   thumb:'sub_category/Welded Fittings/Butt Weld/对焊长半径（LR）弯头Sch10s（滚砂）.png' },
+            { name:'LR Elbow · Sch40s (Sandblasted)',   thumb:'sub_category/Welded Fittings/Butt Weld/对焊长半径（LR）弯头Sch40s（滚砂）.png' },
+            { name:'LR Elbow · Sch80s (Sandblasted)',   thumb:'sub_category/Welded Fittings/Butt Weld/对焊长半径（LR）弯头Sch80s（滚砂）.png' },
+
+            { name:'SR Elbow · Sch10s (Sandblasted)',   thumb:'sub_category/Welded Fittings/Butt Weld/对焊短半径（SR）弯头Sch10s（滚砂）.png' },
+            { name:'SR Elbow · Sch40s (Sandblasted)',   thumb:'sub_category/Welded Fittings/Butt Weld/对焊短半径（SR）弯头Sch40s（滚砂）.png' },
+            { name:'SR Elbow · Sch80s (Sandblasted)',   thumb:'sub_category/Welded Fittings/Butt Weld/对焊短半径（SR）弯头Sch80s（滚砂）.png' },
+
+            { name:'Equal Tee · Sch10s (Sandblasted)',  thumb:'sub_category/Welded Fittings/Butt Weld/对焊三通Sch10s（滚砂）.png' },
+            { name:'Equal Tee · Sch40s (Sandblasted)',  thumb:'sub_category/Welded Fittings/Butt Weld/对焊三通Sch40s（滚砂）.png' },
+            { name:'Equal Tee · Sch80s (Sandblasted)',  thumb:'sub_category/Welded Fittings/Butt Weld/对焊三通Sch80s（滚砂）.png' },
+
+            { name:'Reducing Tee · Sch10s (Sandblasted)', thumb:'sub_category/Welded Fittings/Butt Weld/对焊异径三通Sch10s（滚砂）.png' },
+            { name:'Reducing Tee · Sch40s (Sandblasted)', thumb:'sub_category/Welded Fittings/Butt Weld/对焊异径三通Sch40s（滚砂）.png' },
+            { name:'Reducing Tee · Sch80s (Sandblasted)', thumb:'sub_category/Welded Fittings/Butt Weld/对焊异径三通Sch80s（滚砂）.png' },
+
+            { name:'Concentric Reducer · Sch10s (Sandblasted)', thumb:'sub_category/Welded Fittings/Butt Weld/对焊同心大小头Sch10s（滚砂）.png' },
+            { name:'Concentric Reducer · Sch40s (Sandblasted)', thumb:'sub_category/Welded Fittings/Butt Weld/对焊同心大小头Sch40s（滚砂）.png' },
+            { name:'Concentric Reducer · Sch80s (Sandblasted)', thumb:'sub_category/Welded Fittings/Butt Weld/对焊同心大小头Sch80s（滚砂）.png' },
+
+            { name:'Eccentric Reducer · Sch10s (Sandblasted)',  thumb:'sub_category/Welded Fittings/Butt Weld/对焊偏心大小头Sch10s（滚砂）.png' },
+            { name:'Eccentric Reducer · Sch40s (Sandblasted)',  thumb:'sub_category/Welded Fittings/Butt Weld/对焊偏心大小头Sch40s（滚砂）.png' },
+            { name:'Eccentric Reducer · Sch80s (Sandblasted)',  thumb:'sub_category/Welded Fittings/Butt Weld/对焊偏心大小头Sch80s（滚砂）.png' },
+
+            { name:'End Cap · Sch10s (Sandblasted)',     thumb:'sub_category/Welded Fittings/Butt Weld/对焊管帽Sch10s（滚砂）.png' },
+            { name:'End Cap · Sch40s (Sandblasted)',     thumb:'sub_category/Welded Fittings/Butt Weld/对焊管帽Sch40s（滚砂）.png' },
+            { name:'End Cap · Sch80s (Sandblasted)',     thumb:'sub_category/Welded Fittings/Butt Weld/对焊管帽Sch80s（滚砂）.png' },
+
+            { name:'Stub End · Sch10s (Machined)',       thumb:'sub_category/Welded Fittings/Butt Weld/翻边短节Sch10s（精车）.png' },
+            { name:'Stub End · Sch40s (Machined)',       thumb:'sub_category/Welded Fittings/Butt Weld/翻边短节Sch40s（精车）.png' },
+            { name:'Stub End · Sch80s (Machined)',       thumb:'sub_category/Welded Fittings/Butt Weld/翻边短节Sch80s（精车）.png' }
           ]
         },
+
+        /* ========== 2) Socket Weld（三级：按材质分组） ========== */
         {
-          key:'cs-sw',
-          name:'High-Pressure Socket-Weld (Carbon Steel)',
-          note:'Tees · Elbows · Couplings · Caps · Unions',
-          id:'weld-cs-sw',
-          thumb:'sub_category/weld/碳钢高压承插管件/高压碳钢承插焊三通.png',
-          items: [
-            { name:'SW Tee (CS · High-Pressure)',    thumb:'sub_category/weld/碳钢高压承插管件/高压碳钢承插焊三通.png' },
-            { name:'SW Cross (CS · High-Pressure)',  thumb:'sub_category/weld/碳钢高压承插管件/高压碳钢承插焊四通.png' },
-            { name:'SW Elbow (CS · High-Pressure)',  thumb:'sub_category/weld/碳钢高压承插管件/高压碳钢承插焊弯头.png' },
-            { name:'SW Half Coupling (CS)',          thumb:'sub_category/weld/碳钢高压承插管件/高压碳钢承插焊半管箍.png' },
-            { name:'SW Double-Socket Coupling (CS)', thumb:'sub_category/weld/碳钢高压承插管件/高压碳钢承插焊双承口管箍.png' },
-            { name:'SW Coupling (CS) · Photo A',     thumb:'sub_category/weld/碳钢高压承插管件/6K2A0403.jpg' },
-            { name:'SW Cap (CS · High-Pressure)',    thumb:'sub_category/weld/碳钢高压承插管件/高压碳钢承插焊管帽.png' },
-            { name:'Union (CS · SW High-Pressure)',  thumb:'sub_category/weld/碳钢高压承插管件/高压碳钢承插焊活接头.png' },
-            { name:'Reference Photo B (CS · SW)',    thumb:'sub_category/weld/碳钢高压承插管件/6K2A0404.jpg' },
-            { name:'Reference Photo C (CS · SW)',    thumb:'sub_category/weld/碳钢高压承插管件/6K2A0405.jpg' }
-          ]
-        },
-        {
-          key:'ss-sw',
-          name:'High-Pressure Socket/Threaded (Stainless Steel)',
-          note:'Tees · Elbows · Reducers · Caps · Couplings · O-Lets',
-          id:'weld-ss-sw',
-          thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊三通.png',
-          items: [
-            { name:'Branch Outlet (BW · SS)',             thumb:'sub_category/weld/高压承插管件/不锈钢对焊支管台.png' },
-            { name:'Branch Outlet (SW · SS)',             thumb:'sub_category/weld/高压承插管件/不锈钢承插焊支管台.png' },
-            { name:'Union (BW · SS · High-Pressure)',     thumb:'sub_category/weld/高压承插管件/高压不锈钢对焊活接头.png' },
-            { name:'SW Tee (SS · High-Pressure)',         thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊三通.png' },
-            { name:'SW Cross (SS · High-Pressure)',       thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊四通.png' },
-            { name:'SW Elbow (SS · High-Pressure)',       thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊弯头.png' },
-            { name:'SW 45° Elbow (SS · High-Pressure)',   thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊45°弯头.png' },
-            { name:'SW Half Coupling (SS)',               thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊半管箍.png' },
-            { name:'SW Coupling (SS)',                    thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊管箍.png' },
-            { name:'Reducer (SS · High-Pressure)',        thumb:'sub_category/weld/高压承插管件/高压不锈钢缩减管.png' },
-            { name:'Reducing Tee 1/4–1″ (SS · SW)',       thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊变径三通1、4-1“.png' },
-            { name:'Reducing Tee 1/4–2″ (SS · SW)',       thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊变径三通11、4-2”.png' },
-            { name:'Reducing Coupling 1/4–1″ (SS · SW)',  thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊变径管箍1、4-1“.png' },
-            { name:'Reducing Coupling 1/4–2″ (SS · SW)',  thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊变径管箍11、4-2”.png' },
-            { name:'SW Cap (SS · High-Pressure)',         thumb:'sub_category/weld/高压承插管件/高压不锈钢承插焊管帽.png' },
-            { name:'45° Elbow · Threaded (SS · BSPT)',    thumb:'sub_category/weld/高压承插管件/高压不锈钢螺纹45°弯头（BSPT）.png' },
-            { name:'45° Elbow · Threaded (SS · NPT)',     thumb:'sub_category/weld/高压承插管件/高压不锈钢螺纹45°弯头（NPT）.png' }
+          key: 'socket',
+          name: 'Socket Weld',
+          note: 'High-Pressure · Carbon Steel (A105) · Stainless (304/316)',
+          id: 'weld-socket',
+          thumb: 'sub_category/Welded Fittings/Socket Weld/Carbon Steel (A105)/高压碳钢承插焊三通.png',
+          subchildren: [
+            /* 2-1) CS A105 */
+            {
+              key: 'sw-cs-a105',
+              name: 'Carbon Steel (A105)',
+              note: 'SW Tee/Elbow/Coupling/Cap/Union · Ref Photos',
+              thumb: 'sub_category/Welded Fittings/Socket Weld/Carbon Steel (A105)/高压碳钢承插焊弯头.png',
+              items: [
+                { name:'SW Tee (CS · A105)',            thumb:'sub_category/Welded Fittings/Socket Weld/Carbon Steel (A105)/高压碳钢承插焊三通.png' },
+                { name:'SW Elbow (CS · A105)',          thumb:'sub_category/Welded Fittings/Socket Weld/Carbon Steel (A105)/高压碳钢承插焊弯头.png' },
+                { name:'SW Half Coupling (CS · A105)',  thumb:'sub_category/Welded Fittings/Socket Weld/Carbon Steel (A105)/高压碳钢承插焊半管箍.png' },
+                { name:'SW Double-Socket Coupling (CS)',thumb:'sub_category/Welded Fittings/Socket Weld/Carbon Steel (A105)/高压碳钢承插焊双承口管箍.png' },
+                { name:'SW Cap (CS · A105)',            thumb:'sub_category/Welded Fittings/Socket Weld/Carbon Steel (A105)/高压碳钢承插焊管帽.png' },
+                { name:'SW Cross (CS · A105)',          thumb:'sub_category/Welded Fittings/Socket Weld/Carbon Steel (A105)/高压碳钢承插焊四通.png' },
+                { name:'Union (CS · SW A105)',          thumb:'sub_category/Welded Fittings/Socket Weld/Carbon Steel (A105)/高压碳钢承插焊活接头.png' },
+                { name:'Reference Photo A (CS SW)',     thumb:'sub_category/Welded Fittings/Socket Weld/Carbon Steel (A105)/6K2A0403.jpg' },
+                { name:'Reference Photo B (CS SW)',     thumb:'sub_category/Welded Fittings/Socket Weld/Carbon Steel (A105)/6K2A0404.jpg' },
+                { name:'Reference Photo C (CS SW)',     thumb:'sub_category/Welded Fittings/Socket Weld/Carbon Steel (A105)/6K2A0405.jpg' }
+              ]
+            },
+
+            /* 2-2) SS 304/316 */
+            {
+              key: 'sw-ss-304316',
+              name: 'Stainless Steel (304/316)',
+              note: 'SW/Threaded · O-Let/Union/Coupling/Reducer/45°',
+              thumb: 'sub_category/Welded Fittings/Socket Weld/Stainless Steel (304:316)/高压不锈钢承插焊弯头.png',
+              items: [
+                { name:'Branch Outlet (BW · SS)',                  thumb:'sub_category/Welded Fittings/Socket Weld/Stainless Steel (304:316)/不锈钢对焊支管台.png' },
+                { name:'Branch Outlet (SW · SS)',                  thumb:'sub_category/Welded Fittings/Socket Weld/Stainless Steel (304:316)/不锈钢承插焊支管台.png' },
+                { name:'Union (BW · SS · High-Pressure)',          thumb:'sub_category/Welded Fittings/Socket Weld/Stainless Steel (304:316)/高压不锈钢对焊活接头.png' },
+
+                { name:'SW Tee (SS · HP)',                         thumb:'sub_category/Welded Fittings/Socket Weld/Stainless Steel (304:316)/高压不锈钢承插焊三通.png' },
+                { name:'SW Cross (SS · HP)',                       thumb:'sub_category/Welded Fittings/Socket Weld/Stainless Steel (304:316)/高压不锈钢承插焊四通.png' },
+                { name:'SW Elbow (SS · HP)',                       thumb:'sub_category/Welded Fittings/Socket Weld/Stainless Steel (304:316)/高压不锈钢承插焊弯头.png' },
+                { name:'SW 45° Elbow (SS · HP)',                   thumb:'sub_category/Welded Fittings/Socket Weld/Stainless Steel (304:316)/高压不锈钢承插焊45°弯头.png' },
+                { name:'SW Cap (SS · HP)',                         thumb:'sub_category/Welded Fittings/Socket Weld/Stainless Steel (304:316)/高压不锈钢承插焊管帽.png' },
+                { name:'SW Coupling (SS · HP)',                    thumb:'sub_category/Welded Fittings/Socket Weld/Stainless Steel (304:316)/高压不锈钢承插焊管箍.png' },
+                { name:'SW Half Coupling (SS · HP)',               thumb:'sub_category/Welded Fittings/Socket Weld/Stainless Steel (304:316)/高压不锈钢承插焊半管箍.png' },
+
+                { name:'Reducer (SS · High-Pressure)',             thumb:'sub_category/Welded Fittings/Socket Weld/Stainless Steel (304:316)/高压不锈钢缩减管.png' },
+
+                { name:'Reducing Tee 1/4–1″ (SS · SW)',            thumb:'sub_category/Welded Fittings/Socket Weld/Stainless Steel (304:316)/高压不锈钢承插焊变径三通1、4-1“.png' },
+                { name:'Reducing Tee 1/4–2″ (SS · SW)',            thumb:'sub_category/Welded Fittings/Socket Weld/Stainless Steel (304:316)/高压不锈钢承插焊变径三通11、4-2”.png' },
+                { name:'Reducing Coupling 1/4–1″ (SS · SW)',       thumb:'sub_category/Welded Fittings/Socket Weld/Stainless Steel (304:316)/高压不锈钢承插焊变径管箍1、4-1“.png' },
+                { name:'Reducing Coupling 1/4–2″ (SS · SW)',       thumb:'sub_category/Welded Fittings/Socket Weld/Stainless Steel (304:316)/高压不锈钢承插1焊变径管箍11、4-2”.png' },
+
+                { name:'45° Elbow · Threaded (SS · BSPT)',         thumb:'sub_category/Welded Fittings/Socket Weld/Stainless Steel (304:316)/高压不锈钢螺纹45°弯头（BSPT）.png' },
+                { name:'45° Elbow · Threaded (SS · NPT)',          thumb:'sub_category/Welded Fittings/Socket Weld/Stainless Steel (304:316)/高压不锈钢螺纹45°弯头（NPT）.png' }
+              ]
+            }
           ]
         }
       ]
     },
 
     'threaded': {
-      title: 'Threaded Fittings',
-      subtitle: 'BSPT/NPT · Low-Pressure & High-Pressure · Carbon/Stainless',
-      children: [
-        {
-          key:'low',
-          name:'Low-Pressure Threaded Fittings',
-          note:'Elbows · Tees · Couplings · Caps · Hose Ends · Unions',
-          id:'threaded-low',
-          thumb:'sub_category/threaded/低压螺纹管件/低压内丝四通（NPT）.png',
-          items: [
-            { name:'Plain Female Coupling',                    thumb:'sub_category/threaded/低压螺纹管件/低压光面内丝直通.png' },
-            { name:'45° Elbow (NPT)',                          thumb:'sub_category/threaded/低压螺纹管件/低压45°弯头（NPT）.png' },
-            { name:'Female-to-Weld Union (BSPT)',              thumb:'sub_category/threaded/低压螺纹管件/内丝转焊接活接头（BSPT）.png' },
-            { name:'Plain Weld Hose Connector',                thumb:'sub_category/threaded/低压螺纹管件/低压光面焊接皮管接头.png' },
-            { name:'Plain Hose Connector (BSPT)',              thumb:'sub_category/threaded/低压螺纹管件/低压光面皮管接头（BSPT）.png' },
-            { name:'Male-to-Female Elbow Union (BSPT)',        thumb:'sub_category/threaded/低压螺纹管件/外丝转内丝弯头活接头（BSPT）.png' },
-            { name:'Male-to-Weld Union (BSPT)',                thumb:'sub_category/threaded/低压螺纹管件/外丝转焊接活接头（BSPT）.png' },
-            { name:'Weld-to-Female Elbow Union (BSPT)',        thumb:'sub_category/threaded/低压螺纹管件/焊接转内丝弯头活接头（BSPT）.png' },
-            { name:'Plain Hose Connector (NPT)',               thumb:'sub_category/threaded/低压螺纹管件/低压光面皮管接头（NPT）.png' },
+        title: 'Threaded Fittings',
+        subtitle: 'BSPT/NPT · Low-Pressure (150#) & Forged Threaded (3000#/6000#) · Carbon/Stainless',
+        children: [
+          /* ========== 1) 150# 低压：直接到叶子 ========== */
+          {
+            key: 'low',
+            name: 'Threaded Fittings 150#',
+            note: 'Low-Pressure Threaded · BSPT / NPT',
+            id: 'threaded-low',
+            thumb: 'sub_category/Threaded Fittings/Threaded Fittings 150#/低压内丝管箍（BSPT）.png',
+            items: [
+              { name:'Plain Female Coupling',                    thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压光面内丝直通.png' },
+              { name:'45° Elbow (NPT)',                          thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压45°弯头（NPT）.png' },
+              { name:'Female-to-Weld Union (BSPT)',              thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/内丝转焊接活接头（BSPT）.png' },
+              { name:'Plain Weld Hose Connector',                thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压光面焊接皮管接头.png' },
+              { name:'Plain Hose Connector (BSPT)',              thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压光面皮管接头（BSPT）.png' },
+              { name:'Male-to-Female Elbow Union (BSPT)',        thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/外丝转内丝弯头活接头（BSPT）.png' },
+              { name:'Male-to-Weld Union (BSPT)',                thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/外丝转焊接活接头（BSPT）.png' },
+              { name:'Weld-to-Female Elbow Union (BSPT)',        thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/焊接转内丝弯头活接头（BSPT）.png' },
+              { name:'Plain Hose Connector (NPT)',               thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压光面皮管接头（NPT）.png' },
 
-            { name:'Female-Male-Female Tee',                   thumb:'sub_category/threaded/低压螺纹管件/低压内外内牙三通.png' },
-            { name:'Male-Female-Male Tee',                     thumb:'sub_category/threaded/低压螺纹管件/低压外内外牙三通.png' },
-            { name:'Male-Male-Female Tee',                     thumb:'sub_category/threaded/低压螺纹管件/低压外外内丝三通.png' },
+              { name:'Female-Male-Female Tee',                   thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压内外内牙三通.png' },
+              { name:'Male-Female-Male Tee',                     thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压外内外牙三通.png' },
+              { name:'Male-Male-Female Tee',                     thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压外外内丝三通.png' },
 
-            { name:'Male-Female Adapter',                      thumb:'sub_category/threaded/低压螺纹管件/内外螺纹转接头.png' },
-            { name:'Heavy-Duty SS Water Tank Fitting',         thumb:'sub_category/threaded/低压螺纹管件/加厚不锈钢水箱接头.png' },
-            { name:'Faucet Bent-Leg Connector',                thumb:'sub_category/threaded/低压螺纹管件/龙头曲脚接头.png' },
+              { name:'Male-Female Adapter',                      thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/内外螺纹转接头.png' },
+              { name:'Heavy-Duty SS Water Tank Fitting',         thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/加厚不锈钢水箱接头.png' },
+              { name:'Faucet Bent-Leg Connector',                thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/龙头曲脚接头.png' },
 
-            { name:'Male Elbow (BSPT)',                        thumb:'sub_category/threaded/低压螺纹管件/低压外丝弯头(BSPT).png' },
-            { name:'Male-Female Elbow (BSPT)',                 thumb:'sub_category/threaded/低压螺纹管件/低压内外丝弯头（BSPT）.png' },
+              { name:'Male Elbow (BSPT)',                        thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压外丝弯头(BSPT).png' },
+              { name:'Male-Female Elbow (BSPT)',                 thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压内外丝弯头（BSPT）.png' },
 
-            { name:'Double-Ended Nipple 100mm (BSPT · 16KG)',  thumb:'sub_category/threaded/低压螺纹管件/16KG光面双头管外丝100MM（BSPT）.png' },
-            { name:'Double-Ended Nipple 100mm (NPT · 16KG)',   thumb:'sub_category/threaded/低压螺纹管件/16KG光面双头管外丝100MM（NPT）.png' },
-            { name:'Single-Ended Nipple (BSPT · 16KG)',        thumb:'sub_category/threaded/低压螺纹管件/16KG光面单头管外丝（BSPT）.png' },
-            { name:'Single-Ended Nipple (NPT · 16KG)',         thumb:'sub_category/threaded/低压螺纹管件/16KG光面单头管外丝（NPT）.png' },
+              { name:'Double-Ended Nipple 100mm (BSPT · 16KG)',  thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/16KG光面双头管外丝100MM（BSPT）.png' },
+              { name:'Double-Ended Nipple 100mm (NPT · 16KG)',   thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/16KG光面双头管外丝100MM（NPT）.png' },
+              { name:'Single-Ended Nipple (BSPT · 16KG)',        thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/16KG光面单头管外丝（BSPT）.png' },
+              { name:'Single-Ended Nipple (NPT · 16KG)',         thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/16KG光面单头管外丝（NPT）.png' },
 
-            { name:'Butt-Weld Union (25KG)',                   thumb:'sub_category/threaded/低压螺纹管件/低压对焊活接头（25KG）.png' },
+              { name:'Butt-Weld Union (25KG)',                   thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压对焊活接头（25KG）.png' },
 
-            { name:'Hex Socket Plug (304)',                    thumb:'sub_category/threaded/低压螺纹管件/304内六角堵头.png' },
-            { name:'Hex Socket Flanged Plug (304)',            thumb:'sub_category/threaded/低压螺纹管件/304内六角带边堵头.png' },
-            { name:'Hex Head Flanged Plug (304)',              thumb:'sub_category/threaded/低压螺纹管件/304外六角带边堵头.png' },
+              { name:'Hex Socket Plug (304)',                    thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/304内六角堵头.png' },
+              { name:'Hex Socket Flanged Plug (304)',            thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/304内六角带边堵头.png' },
+              { name:'Hex Head Flanged Plug (304)',              thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/304外六角带边堵头.png' },
 
-            { name:'Hex Nipple (BSPT)',                        thumb:'sub_category/threaded/低压螺纹管件/低压六角对丝（BSPT）.png' },
-            { name:'Hex Hose Connector (BSPT)',                thumb:'sub_category/threaded/低压螺纹管件/低压六角皮管接头（BSPT）.png' },
-            { name:'Female Cross (BSPT)',                      thumb:'sub_category/threaded/低压螺纹管件/低压内丝四通（BSPT）.png' },
-            { name:'Female Cap (BSPT)',                        thumb:'sub_category/threaded/低压螺纹管件/低压内丝管帽（BSPT）.png' },
-            { name:'Female Coupling (BSPT)',                   thumb:'sub_category/threaded/低压螺纹管件/低压内丝管箍（BSPT）.png' },
-            { name:'Male-Female Union (BSPT)',                 thumb:'sub_category/threaded/低压螺纹管件/低压内外丝活接头（BSPT）.png' },
-            { name:'Male-Female Coupling (BSPT)',              thumb:'sub_category/threaded/低压螺纹管件/低压内外丝管箍（BSPT）.png' },
-            { name:'Double-Male Union (BSPT)',                 thumb:'sub_category/threaded/低压螺纹管件/低压双头外丝活接头（BSPT）.png' },
-            { name:'Reducing Hex Nipple (BSPT)',               thumb:'sub_category/threaded/低压螺纹管件/低压变径六角对丝（BSPT）.png' },
-            { name:'Reducing Female Socket (BSPT)',            thumb:'sub_category/threaded/低压螺纹管件/低压变径内丝（BSPT）.png' },
-            { name:'Gasket Union (BSPT)',                      thumb:'sub_category/threaded/低压螺纹管件/低压垫片活接头（BSPT）.png' },
-            { name:'Male Tee (BSPT)',                          thumb:'sub_category/threaded/低压螺纹管件/低压外丝三通（BSPT）.png' },
-            { name:'Bushing (BSPT)',                           thumb:'sub_category/threaded/低压螺纹管件/低压补心（BSPT）.png' },
+              { name:'Hex Nipple (BSPT)',                        thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压六角对丝（BSPT）.png' },
+              { name:'Hex Hose Connector (BSPT)',                thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压六角皮管接头（BSPT）.png' },
+              { name:'Female Cross (BSPT)',                      thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压内丝四通（BSPT）.png' },
+              { name:'Female Cap (BSPT)',                        thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压内丝管帽（BSPT）.png' },
+              { name:'Female Coupling (BSPT)',                   thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压内丝管箍（BSPT）.png' },
+              { name:'Male-Female Elbow (BSPT)',                 thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压内丝弯头活接头（BSPT）.png' },
+              { name:'Male-Female Union (BSPT)',                 thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压内外丝活接头（BSPT）.png' },
+              { name:'Male-Female Coupling (BSPT)',              thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压内外丝管箍（BSPT）.png' },
+              { name:'Double-Male Union (BSPT)',                 thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压双头外丝活接头（BSPT）.png' },
+              { name:'Reducing Hex Nipple (BSPT)',               thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压变径六角对丝（BSPT）.png' },
+              { name:'Reducing Female Socket (BSPT)',            thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压变径内丝（BSPT）.png' },
+              { name:'Gasket Union (BSPT)',                      thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压垫片活接头（BSPT）.png' },
+              { name:'Male Tee (BSPT)',                          thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压外丝三通（BSPT）.png' },
+              { name:'Bushing (BSPT)',                           thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压补心（BSPT）.png' },
 
-            { name:'Hex Nipple (NPT)',                         thumb:'sub_category/threaded/低压螺纹管件/低压六角对丝（NPT）.png' },
-            { name:'Hex Hose Connector (NPT)',                 thumb:'sub_category/threaded/低压螺纹管件/低压六角皮管接头（NPT）.png' },
-            { name:'Female Cross (NPT)',                       thumb:'sub_category/threaded/低压螺纹管件/低压内丝四通（NPT）.png' },
-            { name:'Female Cap (NPT)',                         thumb:'sub_category/threaded/低压螺纹管件/低压内丝管帽（NPT）.png' },
-            { name:'Female Coupling (NPT)',                    thumb:'sub_category/threaded/低压螺纹管件/低压内丝管箍（NPT）.png' },
-            { name:'Male-Female Elbow (NPT)',                  thumb:'sub_category/threaded/低压螺纹管件/低压内外丝弯头（NPT）.png' },
-            { name:'Male-Female Union (NPT)',                  thumb:'sub_category/threaded/低压螺纹管件/低压内外丝活接头（NPT）.png' },
-            { name:'Reducing Hex Nipple (NPT)',                thumb:'sub_category/threaded/低压螺纹管件/低压变径六角对丝（NPT）.png' },
-            { name:'Reducing Female Socket (NPT)',             thumb:'sub_category/threaded/低压螺纹管件/低压变径内丝（NPT）.png' },
-            { name:'Gasket Union (NPT)',                       thumb:'sub_category/threaded/低压螺纹管件/低压垫片活接头（NPT）.png' },
-            { name:'Bushing (NPT)',                            thumb:'sub_category/threaded/低压螺纹管件/低压补心（NPT）.png' },
+              { name:'Hex Nipple (NPT)',                         thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压六角对丝（NPT）.png' },
+              { name:'Hex Hose Connector (NPT)',                 thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压六角皮管接头（NPT）.png' },
+              { name:'Female Cross (NPT)',                       thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压内丝四通（NPT）.png' },
+              { name:'Female Cap (NPT)',                         thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压内丝管帽（NPT）.png' },
+              { name:'Female Coupling (NPT)',                    thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压内丝管箍（NPT）.png' },
+              { name:'Male-Female Elbow (NPT)',                  thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压内外丝弯头（NPT）.png' },
+              { name:'Male-Female Union (NPT)',                  thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压内外丝活接头（NPT）.png' },
+              { name:'Reducing Hex Nipple (NPT)',                thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压变径六角对丝（NPT）.png' },
+              { name:'Reducing Female Socket (NPT)',             thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压变径内丝（NPT）.png' },
+              { name:'Gasket Union (NPT)',                       thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压垫片活接头（NPT）.png' },
+              { name:'Bushing (NPT)',                            thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/低压补心（NPT）.png' },
 
-            { name:'Spiral Nozzle SPJT',                       thumb:'sub_category/threaded/低压螺纹管件/螺旋喷头SPJT.png' },
-            { name:'Spiral Nozzle SPJT (Sand Finish)',         thumb:'sub_category/threaded/低压螺纹管件/螺旋喷头SPJT（砂面）.png' }
-          ]
-        },
+              { name:'Spiral Nozzle SPJT',                       thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/螺旋喷头SPJT.png' },
+              { name:'Spiral Nozzle SPJT (Sand Finish)',         thumb:'sub_category/Threaded Fittings/Threaded Fittings 150#/螺旋喷头SPJT（砂面）.png' }
+            ]
+          },
 
-        {
-          key:'cs-high',
-          name:'Carbon Steel Threaded (High-Pressure)',
-          note:'Elbows · Tees · Couplings · Plugs · Bushings · Unions',
-          id:'threaded-cs-high',
-          thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢螺纹三通（BSPT-NPT）.png',
-          items: [
-            { name:'Hex Flange Plug (CS)',                     thumb:'sub_category/threaded/碳钢高压螺纹管件/碳钢外六角法兰面堵头.png' },
-            { name:'Hex Socket Plug (Forged CS)',              thumb:'sub_category/threaded/碳钢高压螺纹管件/碳钢锻造内六角堵头.png' },
-            { name:'Half Coupling (BSPT/NPT · CS)',            thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢半螺纹管箍(BSPTNPT).png' },
-            { name:'Square Plug (BSPT/NPT · CS)',              thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢四方堵(BSPT、NPT).png' },
-            { name:'Male Nipple · Single End (BSPT/NPT · CS)', thumb:'sub_category/threaded/碳钢高压螺纹管件/碳钢单头螺纹管外丝（BSPT-NPT）.png' },
-            { name:'Male Nipple · Double End (BSPT/NPT · CS)', thumb:'sub_category/threaded/碳钢高压螺纹管件/碳钢双头螺纹管外丝（BSPT-NPT）.png' },
-            { name:'Hex Nipple (BSPT/NPT · CS)',               thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢螺纹六角外丝（BSPT-NPT）.png' },
-            { name:'Elbow (BSPT/NPT · CS)',                    thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢螺纹弯头（BSPT-NPT）.png' },
-            { name:'Tee (BSPT/NPT · CS)',                      thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢螺纹三通（BSPT-NPT）.png' },
-            { name:'Union (BSPT/NPT · CS)',                    thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢螺纹活接头（BSPT-NPT）.png' },
-            { name:'Cap (BSPT/NPT · CS)',                      thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢螺纹管帽（BSPT-NPT）.png' },
-            { name:'Coupling (BSPT/NPT · CS)',                 thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢螺纹管箍（BSPT-NPT）.png' },
-            { name:'Bushing (BSPT · CS)',                      thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢补心（BSPT）.png' },
-            { name:'Bushing (NPT · CS)',                       thumb:'sub_category/threaded/碳钢高压螺纹管件/高压碳钢补心（NPT）.png' },
-            { name:'Hex Plug (BSPT/NPT · CS)',                 thumb:'sub_category/threaded/碳钢高压螺纹管件/碳钢外六角堵头（BSPT、NPT）.png' }
-          ]
-        },
+          /* ========== 2) 3000#/6000#：进入第三级（CS / SS） ========== */
+          {
+            key: 'forged',
+            name: 'Forged Threaded 3000#/6000#',
+            note: 'High-Pressure · Carbon Steel (A105) & Stainless (304/316)',
+            id: 'threaded-forged',
+            thumb: 'sub_category/Threaded Fittings/CS Forged Threaded 3000#:6000#/高压碳钢螺纹三通（BSPT-NPT）.png',
+            subchildren: [
+              /* 2-1) 碳钢 A105 */
+              {
+                key: 'ft-cs-a105',
+                name: 'Carbon Steel (A105)',
+                note: '3000#/6000# · BSPT/NPT',
+                thumb: 'sub_category/Threaded Fittings/CS Forged Threaded 3000#:6000#/高压碳钢螺纹弯头（BSPT-NPT）.png',
+                items: [
+                  { name:'Hex Flange Plug (CS)',                        thumb:'sub_category/Threaded Fittings/CS Forged Threaded 3000#:6000#/碳钢外六角法兰面堵头.png' },
+                  { name:'Hex Socket Plug (Forged CS)',                 thumb:'sub_category/Threaded Fittings/CS Forged Threaded 3000#:6000#/碳钢锻造内六角堵头.png' },
+                  { name:'Half Coupling (BSPT/NPT · CS)',               thumb:'sub_category/Threaded Fittings/CS Forged Threaded 3000#:6000#/高压碳钢半螺纹管箍(BSPTNPT).png' },
+                  { name:'Square Plug (BSPT/NPT · CS)',                 thumb:'sub_category/Threaded Fittings/CS Forged Threaded 3000#:6000#/高压碳钢四方堵(BSPT、NPT).png' },
+                  { name:'Male Nipple · Single End (BSPT/NPT · CS)',    thumb:'sub_category/Threaded Fittings/CS Forged Threaded 3000#:6000#/碳钢单头螺纹管外丝（BSPT-NPT）.png' },
+                  { name:'Male Nipple · Double End (BSPT/NPT · CS)',    thumb:'sub_category/Threaded Fittings/CS Forged Threaded 3000#:6000#/碳钢双头螺纹管外丝（BSPT-NPT）.png' },
+                  { name:'Hex Nipple (BSPT/NPT · CS)',                  thumb:'sub_category/Threaded Fittings/CS Forged Threaded 3000#:6000#/高压碳钢螺纹六角外丝（BSPT-NPT）.png' },
+                  { name:'Elbow (BSPT/NPT · CS)',                       thumb:'sub_category/Threaded Fittings/CS Forged Threaded 3000#:6000#/高压碳钢螺纹弯头（BSPT-NPT）.png' },
+                  { name:'Tee (BSPT/NPT · CS)',                         thumb:'sub_category/Threaded Fittings/CS Forged Threaded 3000#:6000#/高压碳钢螺纹三通（BSPT-NPT）.png' },
+                  { name:'Union (BSPT/NPT · CS)',                       thumb:'sub_category/Threaded Fittings/CS Forged Threaded 3000#:6000#/高压碳钢螺纹活接头（BSPT-NPT）.png' },
+                  { name:'Cap (BSPT/NPT · CS)',                         thumb:'sub_category/Threaded Fittings/CS Forged Threaded 3000#:6000#/高压碳钢螺纹管帽（BSPT-NPT）.png' },
+                  { name:'Coupling (BSPT/NPT · CS)',                    thumb:'sub_category/Threaded Fittings/CS Forged Threaded 3000#:6000#/高压碳钢螺纹管箍（BSPT-NPT）.png' },
+                  { name:'Bushing (BSPT · CS)',                         thumb:'sub_category/Threaded Fittings/CS Forged Threaded 3000#:6000#/高压碳钢补心（BSPT）.png' },
+                  { name:'Bushing (NPT · CS)',                          thumb:'sub_category/Threaded Fittings/CS Forged Threaded 3000#:6000#/高压碳钢补心（NPT）.png' },
+                  { name:'Hex Plug (BSPT/NPT · CS)',                    thumb:'sub_category/Threaded Fittings/CS Forged Threaded 3000#:6000#/碳钢外六角堵头（BSPT、NPT）.png' }
+                ]
+              },
+              /* 2-2) 不锈钢 304/316 */
+              {
+                key: 'ft-ss-304316',
+                name: 'Stainless Steel (304/316)',
+                note: '3000#/6000# · BSPT/NPT',
+                thumb: 'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢内丝三通（BSPT）.png',
+                items: [
+                  { name:'Hex Nipple (BSPT · SS)',                   thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢六角对丝(BSPT).png' },
+                  { name:'Hex Nipple (NPT · SS)',                    thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢六角对丝(NPT).png' },
 
-        {
-          key:'ss-high',
-          name:'Stainless Threaded (High-Pressure)',
-          note:'Elbows · Tees · Couplings · Plugs · Bushings · Unions',
-          id:'threaded-ss-high',
-          thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢螺纹四通（NPT）.png',
-          items: [
-            { name:'Hex Nipple (BSPT · SS)',                   thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢六角对丝(BSPT).png' },
-            { name:'Hex Nipple (NPT · SS)',                    thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢六角对丝(NPT).png' },
+                  { name:'Double-Ended Male 50mm (BSPT · SS)',       thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压双头外丝50MM(BSPT).png' },
+                  { name:'Double-Ended Male 75mm (BSPT · SS)',       thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压双头外丝75MM(BSPT).png' },
+                  { name:'Double-Ended Male 100mm (BSPT · SS)',      thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压双头外丝100MM(BSPT).png' },
+                  { name:'Double-Ended Male 150mm (BSPT · SS)',      thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压双头外丝150MM(BSPT).png' },
+                  { name:'Double-Ended Male 200mm (BSPT · SS)',      thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压双头外丝200MM(BSPT).png' },
 
-            { name:'Double-Ended Male 50mm (BSPT · SS)',       thumb:'sub_category/threaded/高压螺纹管件/高压双头外丝50MM(BSPT).png' },
-            { name:'Double-Ended Male 75mm (BSPT · SS)',       thumb:'sub_category/threaded/高压螺纹管件/高压双头外丝75MM(BSPT).png' },
-            { name:'Double-Ended Male 100mm (BSPT · SS)',      thumb:'sub_category/threaded/高压螺纹管件/高压双头外丝100MM(BSPT).png' },
-            { name:'Double-Ended Male 150mm (BSPT · SS)',      thumb:'sub_category/threaded/高压螺纹管件/高压双头外丝150MM(BSPT).png' },
-            { name:'Double-Ended Male 200mm (BSPT · SS)',      thumb:'sub_category/threaded/高压螺纹管件/高压双头外丝200MM(BSPT).png' },
+                  { name:'Single-Ended Male 50mm (BSPT · SS)',       thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压单头外丝50MM(BSPT).png' },
+                  { name:'Single-Ended Male 75mm (BSPT · SS)',       thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压单头外丝75MM(BSPT).png' },
+                  { name:'Single-Ended Male 100mm (BSPT · SS)',      thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压单头外丝100MM（BSPT）.png' },
+                  { name:'Single-Ended Male 150mm (BSPT · SS)',      thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压单头外丝150MM(BSPT).png' },
+                  { name:'Single-Ended Male 200mm (BSPT · SS)',      thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压单头外丝200MM(BSPT).png' },
 
-            { name:'Single-Ended Male 50mm (BSPT · SS)',       thumb:'sub_category/threaded/高压螺纹管件/高压单头外丝50MM(BSPT).png' },
-            { name:'Single-Ended Male 75mm (BSPT · SS)',       thumb:'sub_category/threaded/高压螺纹管件/高压单头外丝75MM(BSPT).png' },
-            { name:'Single-Ended Male 100mm (BSPT · SS)',      thumb:'sub_category/threaded/高压螺纹管件/高压单头外丝100MM（BSPT）.png' },
-            { name:'Single-Ended Male 150mm (BSPT · SS)',      thumb:'sub_category/threaded/高压螺纹管件/高压单头外丝150MM(BSPT).png' },
+                  { name:'Hex Nipple (BSPT · SS) — alt',             thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢六角对丝（BSPT）.png' },
+                  { name:'Hex Nipple (NPT · SS) — alt',              thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢六角对丝（NPT）.png' },
 
-            { name:'Hex Nipple (BSPT · SS) — alt',             thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢六角对丝（BSPT）.png' },
-            { name:'Hex Nipple (NPT · SS) — alt',              thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢六角对丝（NPT）.png' },
+                  { name:'Female Tee (BSPT · SS)',                   thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢内丝三通（BSPT）.png' },
+                  { name:'Female Tee (NPT · SS)',                    thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢内丝三通（NPT）.png' },
+                  { name:'Female Elbow (BSPT · SS)',                 thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢内丝弯头（BSPT）.png' },
+                  { name:'Female Elbow (NPT · SS)',                  thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢内丝弯头（NPT）.png' },
 
-            { name:'Female Tee (BSPT · SS)',                   thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢内丝三通（BSPT）.png' },
-            { name:'Female Tee (NPT · SS)',                    thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢内丝三通（NPT）.png' },
-            { name:'Female Elbow (BSPT · SS)',                 thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢内丝弯头（BSPT）.png' },
-            { name:'Female Elbow (NPT · SS)',                  thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢内丝弯头（NPT）.png' },
+                  { name:'Square Plug (BSPT · SS)',                  thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢四方堵头（BSPT）.png' },
+                  { name:'Square Plug (NPT · SS)',                   thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢四方堵头（NPT）.png' },
+                  { name:'Hex Socket Plug (BSPT · SS)',              thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢六角堵头（BSPT）.png' },
+                  { name:'Hex Socket Plug (NPT · SS)',               thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢六角堵头（NPT）.png' },
 
-            { name:'Square Plug (BSPT · SS)',                  thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢四方堵头（BSPT）.png' },
-            { name:'Square Plug (NPT · SS)',                   thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢四方堵头（NPT）.png' },
-            { name:'Hex Socket Plug (BSPT · SS)',              thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢六角堵头（BSPT）.png' },
-            { name:'Hex Socket Plug (NPT · SS)',               thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢六角堵头（NPT）.png' },
+                  { name:'Gasket Union (BSPT · SS)',                 thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢垫片活接头（BSPT）.png' },
+                  { name:'Half Coupling (BSPT · SS)',                thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢螺纹半管箍（BSPT）.png' },
+                  { name:'Half Coupling (NPT · SS)',                 thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢螺纹半管箍（NPT）.png' },
 
-            { name:'Gasket Union (BSPT · SS)',                 thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢垫片活接头（BSPT）.png' },
-            { name:'Half Coupling (BSPT · SS)',                thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢螺纹半管箍（BSPT）.png' },
+                  { name:'Female Cross (BSPT · SS)',                 thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢螺纹四通（BSPT）.png' },
+                  { name:'Female Cross (NPT · SS)',                  thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢螺纹四通（NPT）.png' },
+                  { name:'Female Cap (BSPT · SS)',                   thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢螺纹管帽（BSPT）.png' },
+                  { name:'Female Cap (NPT · SS)',                    thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢螺纹管帽（NPT）.png' },
+                  { name:'Female Coupling (BSPT · SS)',              thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢螺纹管箍（BSPT）.png' },
+                  { name:'Female Coupling (NPT · SS)',               thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢螺纹管箍（NPT）.png' },
 
-            { name:'Female Cross (BSPT · SS)',                 thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢螺纹四通（BSPT）.png' },
-            { name:'Female Cross (NPT · SS)',                  thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢螺纹四通（NPT）.png' },
-            { name:'Female Cap (BSPT · SS)',                   thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢螺纹管帽（BSPT）.png' },
-            { name:'Female Cap (NPT · SS)',                    thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢螺纹管帽（NPT）.png' },
-            { name:'Female Coupling (BSPT · SS)',              thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢螺纹管箍（BSPT）.png' },
-            { name:'Female Coupling (NPT · SS)',               thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢螺纹管箍（NPT）.png' },
+                  { name:'Bushing (BSPT · SS)',                      thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢补心（BSPT）.png' },
+                  { name:'Bushing (NPT · SS)',                       thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压不锈钢补心（NPT）.png' },
 
-            { name:'Bushing (BSPT · SS)',                      thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢补心（BSPT）.png' },
-            { name:'Bushing (NPT · SS)',                       thumb:'sub_category/threaded/高压螺纹管件/高压不锈钢补心（NPT）.png' },
+                  { name:'BSPT Elbow (Male-Female · HP)',            thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压内外丝弯头BSPT.png' },
+                  { name:'Ball-Surface Union (BSPT · HP)',           thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压球面活接头（BSPT）.png' },
+                  { name:'Ball-Surface MF Union (BSPT · HP)',        thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/高压球面内外丝活接头（BSPT）.png' },
 
-            { name:'BSPT Elbow (Male-Female · HP)',            thumb:'sub_category/threaded/高压螺纹管件/高压内外丝弯头BSPT.png' },
-            { name:'Branch Outlet (Threaded · BSPT)',          thumb:'sub_category/threaded/高压螺纹管件/不锈钢螺纹支管台（BSPT）.png' },
-            { name:'Branch Outlet (Threaded · NPT)',           thumb:'sub_category/threaded/高压螺纹管件/不锈钢螺纹支管台（NPT）.png' },
-
-            { name:'Ball-Surface Union (BSPT · HP)',           thumb:'sub_category/threaded/高压螺纹管件/高压球面活接头（BSPT）.png' }
-          ]
-        }
-      ]
-    },
+                  { name:'Thick-Wall Straight (BSP-Rp)',             thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/加厚通丝（BSP-Rp）.png' },
+                  { name:'Thick-Wall Half Straight (BSP-Rp)',        thumb:'sub_category/Threaded Fittings/Forged Threaded 3000#:6000#/加厚半通丝（BSP-Rp）.png' }
+                ]
+              }
+            ]
+          }
+        ]
+      },
 
 
     /* 3) FLANGES — unchanged */
@@ -396,52 +445,116 @@
       title: 'Valves',
       subtitle: 'Cast / Forged · Threaded / Socket-Weld / Flanged · Stainless & Carbon',
       children: [
-        /* Cast ball valves */
-        { name:'Cast 1-Piece Ball Valve (Light)',   id:'val-cast-1pc-light',  thumb:'sub_category/values/铸造一片式球阀（轻型）.png' },
-        { name:'Cast 1-Piece Ball Valve (Heavy)',   id:'val-cast-1pc-heavy',  thumb:'sub_category/values/铸造一片式球阀（重型）.png' },
-        { name:'Cast 2-Piece Ball Valve (Light)',   id:'val-cast-2pc-light',  thumb:'sub_category/values/铸造二片式球阀（轻型）.png' },
-        { name:'Cast 2-Piece Ball Valve (Medium)',  id:'val-cast-2pc-medium', thumb:'sub_category/values/铸造二片式球阀（中型）.png' },
-        { name:'Cast 2-Piece Ball Valve (Heavy)',   id:'val-cast-2pc-heavy',  thumb:'sub_category/values/铸造二片式球阀（重型）.png' },
-        { name:'Cast 3-Piece Ball Valve (Light)',   id:'val-cast-3pc-light',  thumb:'sub_category/values/铸造三片式球阀（轻型）.png' },
-        { name:'Cast 3-Piece Ball Valve (Medium)',  id:'val-cast-3pc-medium', thumb:'sub_category/values/铸造三片式球阀（中型）.png' },
-        { name:'Cast 3-Piece Ball Valve (Heavy)',   id:'val-cast-3pc-heavy',  thumb:'sub_category/values/铸造三片式球阀（重型）.png' },
-        { name:'3-Piece Welded Ball Valve (Light)', id:'val-3pc-weld-light',  thumb:'sub_category/values/铸造三片式焊接球阀（轻型）.png' },
-        { name:'3-Piece Welded Ball Valve (Heavy)', id:'val-3pc-weld-heavy',  thumb:'sub_category/values/铸造三片式焊接球阀（重型）.png' },
-        { name:'Wafer One-Piece Ball Valve',        id:'val-wafer-1pc',       thumb:'sub_category/values/蝶形一片式球阀.png' },
+        /* ====================== 1) 球阀（Ball Valves）→ 第三级：1P / 2P / 3P ====================== */
+        {
+          key: 'ball',
+          name: 'Ball Valves (Cast)',
+          note: '1-Piece / 2-Piece / 3-Piece · Wafer & Welded',
+          id: 'val-ball',
+          thumb: 'sub_category/Values/球阀/1P/铸造一片式球阀（轻型）.png',
+          subchildren: [
+            {
+              key: 'ball-1p',
+              name: '1-Piece',
+              note: 'Wafer / Light / Heavy',
+              thumb: 'sub_category/Values/球阀/1P/铸造一片式球阀（重型）.png',
+              items: [
+                { name:'Wafer One-Piece Ball Valve',  thumb:'sub_category/Values/球阀/1P/蝶形一片式球阀.png' },
+                { name:'Cast 1-Piece Ball Valve (Light)',  thumb:'sub_category/Values/球阀/1P/铸造一片式球阀（轻型）.png' },
+                { name:'Cast 1-Piece Ball Valve (Heavy)',  thumb:'sub_category/Values/球阀/1P/铸造一片式球阀（重型）.png' }
+              ]
+            },
+            {
+              key: 'ball-2p',
+              name: '2-Piece',
+              note: 'Light / Medium / Heavy',
+              thumb: 'sub_category/Values/球阀/2P/铸造二片式球阀（中型）.png',
+              items: [
+                { name:'Cast 2-Piece Ball Valve (Light)',   thumb:'sub_category/Values/球阀/2P/铸造二片式球阀（轻型）.png' },
+                { name:'Cast 2-Piece Ball Valve (Medium)',  thumb:'sub_category/Values/球阀/2P/铸造二片式球阀（中型）.png' },
+                { name:'Cast 2-Piece Ball Valve (Heavy)',   thumb:'sub_category/Values/球阀/2P/铸造二片式球阀（重型）.png' }
+              ]
+            },
+            {
+              key: 'ball-3p',
+              name: '3-Piece',
+              note: 'Light / Medium / Heavy · Welded',
+              thumb: 'sub_category/Values/球阀/3P/铸造三片式球阀（中型）.png',
+              items: [
+                { name:'Cast 3-Piece Ball Valve (Light)',   thumb:'sub_category/Values/球阀/3P/铸造三片式球阀（轻型）.png' },
+                { name:'Cast 3-Piece Ball Valve (Medium)',  thumb:'sub_category/Values/球阀/3P/铸造三片式球阀（中型）.png' },
+                { name:'Cast 3-Piece Ball Valve (Heavy)',   thumb:'sub_category/Values/球阀/3P/铸造三片式球阀（重型）.png' },
+                { name:'3-Piece Welded Ball Valve (Light)', thumb:'sub_category/Values/球阀/3P/铸造三片式焊接球阀（轻型）.png' },
+                { name:'3-Piece Welded Ball Valve (Heavy)', thumb:'sub_category/Values/球阀/3P/铸造三片式焊接球阀（重型）.png' }
+              ]
+            }
+          ]
+        },
 
-        /* Cast stainless valves & strainers */
-        { name:'Gate Valve (Cast Stainless)',               id:'val-cast-ss-gate',    thumb:'sub_category/values/铸造不锈钢闸阀.png' },
-        { name:'Vertical Check Valve (Cast Stainless)',     id:'val-cast-ss-vcheck',  thumb:'sub_category/values/铸造不锈钢立式止回阀.png' },
-        { name:'Horizontal Check Valve (Low-Pressure SS)',  id:'val-lp-ss-hcheck',    thumb:'sub_category/values/低压不锈钢卧式止回阀.png' },
-        { name:'Y-Strainer (Cast Stainless)',               id:'val-cast-ss-ystr',    thumb:'sub_category/values/铸造不锈钢Y型过滤器.png' },
+        /* ====================== 2) 锻钢阀门（Forged Steel）====================== */
+        {
+          key: 'forged-steel',
+          name: 'Forged Steel Valves',
+          note: 'Threaded / Socket-Weld / Flanged · CS/Alloy',
+          id: 'val-forged-steel',
+          thumb: 'sub_category/Values/锻钢阀门/锻钢承插焊闸阀.png',
+          items: [
+            /* Threaded */
+            { name:'Gate Valve (Forged · Threaded)',  thumb:'sub_category/Values/锻钢阀门/锻钢螺纹闸阀.png' },
+            { name:'Globe Valve (Forged · Threaded)', thumb:'sub_category/Values/锻钢阀门/锻钢螺纹截止阀.png' },
 
-        /* Forged steel — socket-weld */
-        { name:'Gate Valve (Forged · SW)',   id:'val-forged-sw-gate',  thumb:'sub_category/values/锻钢承插焊闸阀.png' },
-        { name:'Globe Valve (Forged · SW)',  id:'val-forged-sw-globe', thumb:'sub_category/values/锻钢承插焊截止阀.png' },
-        { name:'Check Valve (Forged · SW)',  id:'val-forged-sw-check', thumb:'sub_category/values/承插焊锻钢止回阀.png' },
+            /* Socket-Weld */
+            { name:'Gate Valve (Forged · SW)',        thumb:'sub_category/Values/锻钢阀门/锻钢承插焊闸阀.png' },
+            { name:'Globe Valve (Forged · SW)',       thumb:'sub_category/Values/锻钢阀门/锻钢承插焊截止阀.png' },
+            { name:'Check Valve (Forged · SW)',       thumb:'sub_category/Values/锻钢阀门/承插焊锻钢止回阀.png' },
 
-        /* Forged steel — threaded */
-        { name:'Gate Valve (Forged · Threaded)',  id:'val-forged-thd-gate',  thumb:'sub_category/values/锻钢螺纹闸阀.png' },
-        { name:'Globe Valve (Forged · Threaded)', id:'val-forged-thd-globe', thumb:'sub_category/values/锻钢螺纹截止阀.png' },
+            /* Flanged */
+            { name:'Gate Valve (Forged · Flanged)',   thumb:'sub_category/Values/锻钢阀门/锻钢法兰闸阀.png' },
+            { name:'Globe Valve (Forged · Flanged)',  thumb:'sub_category/Values/锻钢阀门/锻钢法兰截止阀.png' },
+            { name:'Check Valve (Forged · Flanged)',  thumb:'sub_category/Values/锻钢阀门/锻钢法兰止回阀.png' },
+            { name:'2-Piece Ball Valve (Forged · Flanged)', thumb:'sub_category/Values/锻钢阀门/锻钢法兰二片式球阀.png' },
+            { name:'Strainer (Forged · Flanged)',     thumb:'sub_category/Values/锻钢阀门/锻钢法兰过滤器.png' }
+          ]
+        },
 
-        /* Forged steel — flanged */
-        { name:'Gate Valve (Forged · Flanged)',   id:'val-forged-flg-gate',   thumb:'sub_category/values/锻钢法兰闸阀.png' },
-        { name:'Globe Valve (Forged · Flanged)',  id:'val-forged-flg-globe',  thumb:'sub_category/values/锻钢法兰截止阀.png' },
-        { name:'Check Valve (Forged · Flanged)',  id:'val-forged-flg-check',  thumb:'sub_category/values/锻钢法兰止回阀.png' },
-        { name:'Strainer (Forged · Flanged)',     id:'val-forged-flg-strain', thumb:'sub_category/values/锻钢法兰过滤器.png' },
-        { name:'2-Piece Ball Valve (Forged · Flanged)', id:'val-forged-flg-2pc', thumb:'sub_category/values/锻钢法兰二片式球阀.png' },
+        /* ====================== 3) 高压锻造阀（不锈钢·高压）====================== */
+        {
+          key: 'hp-stainless',
+          name: 'High-Pressure Stainless (Forged)',
+          note: 'Threaded / Socket-Weld / Flanged · 304/316',
+          id: 'val-hp-stainless',
+          thumb: 'sub_category/Values/高压锻造阀/高压不锈钢螺纹闸阀.png',
+          items: [
+            /* Threaded */
+            { name:'Gate Valve (HP SS · Threaded)',   thumb:'sub_category/Values/高压锻造阀/高压不锈钢螺纹闸阀.png' },
+            { name:'Globe Valve (HP SS · Threaded)',  thumb:'sub_category/Values/高压锻造阀/高压不锈钢螺纹截止阀.png' },
+            { name:'Check Valve (HP SS · Threaded)',  thumb:'sub_category/Values/高压锻造阀/高压不锈钢螺纹止回阀.png' },
+            { name:'Strainer (HP SS · Threaded)',     thumb:'sub_category/Values/高压锻造阀/高压不锈钢螺纹过滤器.png' },
 
-        /* High-pressure stainless — threaded */
-        { name:'Gate Valve (HP SS · Threaded)',   id:'val-hpss-thd-gate',   thumb:'sub_category/values/高压不锈钢螺纹闸阀.png' },
-        { name:'Globe Valve (HP SS · Threaded)',  id:'val-hpss-thd-globe',  thumb:'sub_category/values/高压不锈钢螺纹截止阀.png' },
-        { name:'Check Valve (HP SS · Threaded)',  id:'val-hpss-thd-check',  thumb:'sub_category/values/高压不锈钢螺纹止回阀.png' },
-        { name:'Strainer (HP SS · Threaded)',     id:'val-hpss-thd-strain', thumb:'sub_category/values/高压不锈钢螺纹过滤器.png' },
+            /* Socket-Weld */
+            { name:'Gate Valve (HP SS · SW)',         thumb:'sub_category/Values/高压锻造阀/高压不锈钢承插焊闸阀.png' },
+            { name:'Globe Valve (HP SS · SW)',        thumb:'sub_category/Values/高压锻造阀/高压不锈钢承插焊截止阀.png' },
 
-        /* High-pressure stainless — socket-weld & flanged */
-        { name:'Gate Valve (HP SS · SW)',         id:'val-hpss-sw-gate',    thumb:'sub_category/values/高压不锈钢承插焊闸阀.png' },
-        { name:'Globe Valve (HP SS · SW)',        id:'val-hpss-sw-globe',   thumb:'sub_category/values/高压不锈钢承插焊截止阀.png' },
-        { name:'Gate Valve (HP SS · Flanged)',    id:'val-hpss-flg-gate',   thumb:'sub_category/values/高压不锈钢法兰闸阀.png' },
-        { name:'Globe Valve (HP SS · Flanged)',   id:'val-hpss-flg-globe',  thumb:'sub_category/values/高压不锈钢法兰截止阀.png' }
+            /* Flanged */
+            { name:'Gate Valve (HP SS · Flanged)',    thumb:'sub_category/Values/高压锻造阀/高压不锈钢法兰闸阀.png' },
+            { name:'Globe Valve (HP SS · Flanged)',   thumb:'sub_category/Values/高压锻造阀/高压不锈钢法兰截止阀.png' }
+          ]
+        },
+
+        /* ====================== 4) 铸造不锈钢阀 & 过滤器（单图）====================== */
+        {
+          key: 'cast-ss-singletons',
+          name: 'Cast Stainless (Singles)',
+          note: 'Gate · Vertical/Horizontal Check · Y-Strainer',
+          id: 'val-cast-ss-solo',
+          thumb: 'sub_category/Values/铸造不锈钢闸阀.png',
+          items: [
+            { name:'Gate Valve (Cast Stainless)',               thumb:'sub_category/Values/铸造不锈钢闸阀.png' },
+            { name:'Vertical Check Valve (Cast Stainless)',     thumb:'sub_category/Values/铸造不锈钢立式止回阀.png' },
+            { name:'Horizontal Check Valve (Low-Pressure SS)',  thumb:'sub_category/Values/低压不锈钢卧式止回阀.png' },
+            { name:'Y-Strainer (Cast Stainless)',               thumb:'sub_category/Values/铸造不锈钢Y型过滤器.png' }
+          ]
+        }
       ]
     }
   };
@@ -450,6 +563,7 @@ const keys = ['weld','threaded','flanges','values'];
 
   // --- URL & legacy mapping ---
   const params = new URLSearchParams(location.search);
+
   let rawType = params.get('type');
   if (rawType && LEGACY_MAP[rawType]) {
     const newType = LEGACY_MAP[rawType];
@@ -457,8 +571,10 @@ const keys = ['weld','threaded','flanges','values'];
     const newUrl = `${location.pathname}?${params.toString()}`;
     history.replaceState({type:newType}, '', newUrl);
   }
+
   const currentTypeInit  = params.get('type')  || 'weld';
-  const currentChildInit = params.get('child') || null; // 现在不限于 weld
+  const currentChildInit = params.get('child') || null;
+  const currentGrandInit = params.get('grand') || null; // ✅ 第三级
 
   const titleEl = document.getElementById('title');
   const subtitleEl = document.getElementById('subtitle');
@@ -467,8 +583,9 @@ const keys = ['weld','threaded','flanges','values'];
 
   let currentType  = currentTypeInit;
   let currentChild = currentChildInit;
+  let currentGrand = currentGrandInit; // ✅
 
-  // 工具：取子项与是否存在 items
+// 工具：取子项与是否存在 items / subchildren / grandchild
   function getChild(typeKey, childKey){
     const data = CATALOG[typeKey];
     if (!data) return null;
@@ -478,44 +595,112 @@ const keys = ['weld','threaded','flanges','values'];
     const c = getChild(typeKey, childKey);
     return !!(c && Array.isArray(c.items) && c.items.length);
   }
+  function childHasSubchildren(typeKey, childKey){
+    const c = getChild(typeKey, childKey);
+    return !!(c && Array.isArray(c.subchildren) && c.subchildren.length);
+  }
+  function getGrandchild(typeKey, childKey, grandKey){
+    const c = getChild(typeKey, childKey);
+    if (!c || !Array.isArray(c.subchildren)) return null;
+    return c.subchildren.find(sc => (sc.key||sc.id||sc.name) === grandKey) || null;
+  }
+  function grandchildHasItems(typeKey, childKey, grandKey){
+    const g = getGrandchild(typeKey, childKey, grandKey);
+    return !!(g && Array.isArray(g.items) && g.items.length);
+  }
 
-  // ========== RIGHT PANE RENDER ==========
-  function renderRight(typeKey, childKey=null){
+  // ========== RIGHT PANE RENDER (支持到第三级) ==========
+  function renderRight(typeKey, childKey=null, grandKey=null){
     const data = CATALOG[typeKey];
     if (!data) return;
 
-    // 若传入 child 且该子类存在 items，则渲染二级视图（适用于 weld、threaded 等任何分类）
-    if (childKey && childHasItems(typeKey, childKey)) {
+    // ③ 三级：child + grand + items[]
+    if (childKey && grandKey && grandchildHasItems(typeKey, childKey, grandKey)) {
       const child = getChild(typeKey, childKey);
+      const grand = getGrandchild(typeKey, childKey, grandKey);
 
-      titleEl.textContent   = child.name;
-      subtitleEl.textContent= child.note || data.subtitle || '';
+      titleEl.textContent    = grand.name;
+      subtitleEl.textContent = grand.note || child?.note || data.subtitle || '';
       listEl.innerHTML = '';
 
-      // 面包屑
       document.querySelector('.crumb').innerHTML =
         `<a href="index.html#categories">← Back to Categories</a> · 
          <a href="?type=${encodeURIComponent(typeKey)}">${data.title}</a> · 
-         <span>${child.name}</span>`;
+         <a href="?type=${encodeURIComponent(typeKey)}&child=${encodeURIComponent(childKey)}">${child.name}</a> · 
+         <span>${grand.name}</span>`;
 
-      (child.items||[]).forEach(it=>{
+      (grand.items||[]).forEach(it=>{
         const a = document.createElement('a');
         a.className = 'vitem';
         a.href = `detail.html?id=${encodeURIComponent(it.id||it.name)}`;
         a.innerHTML = `
-          <div class='vthumb'>
-            <img src="${it.thumb||''}" alt="${it.name||''}" loading="lazy" decoding="async" />
-          </div>
-          <div class='vbody'>
-            <div class='vtitle'>${it.name}</div>
-          </div>
+          <div class='vthumb'><img src="${safeSrc(it.thumb||'')}" alt="${it.name||''}" loading="lazy" decoding="async" /></div>
+          <div class='vbody'><div class='vtitle'>${it.name}</div></div>
           <div class='vgo'>View <span>›</span></div>`;
         listEl.appendChild(a);
       });
-      return; // 已渲染二级
+      return;
     }
 
-    // 一级视图：展示该类的 children 列表（原样 + 对有 items 的子类改为内部路由）
+    // ② 二级：有 child
+    if (childKey){
+      const child = getChild(typeKey, childKey);
+
+      // ②-a 有 subchildren：渲染二级分组卡片，点击进入三级
+      if (child && childHasSubchildren(typeKey, childKey)){
+        titleEl.textContent    = child.name;
+        subtitleEl.textContent = child.note || data.subtitle || '';
+        listEl.innerHTML = '';
+
+        document.querySelector('.crumb').innerHTML =
+          `<a href="index.html#categories">← Back to Categories</a> · 
+           <a href="?type=${encodeURIComponent(typeKey)}">${data.title}</a> · 
+           <span>${child.name}</span>`;
+
+        (child.subchildren||[]).forEach(sc=>{
+          const scKey = sc.key || sc.id || sc.name;
+          const a = document.createElement('a');
+          a.className = 'vitem';
+          a.href = `?type=${encodeURIComponent(typeKey)}&child=${encodeURIComponent(childKey)}&grand=${encodeURIComponent(scKey)}`;
+          a.innerHTML = `
+            <div class='vthumb'><img src="${safeSrc(sc.thumb||'')}" alt="${sc.name||''}" loading="lazy" decoding="async" /></div>
+            <div class='vbody'>
+              <div class='vtitle'>${sc.name}</div>
+              <p class='vnote'>${sc.note||''}</p>
+            </div>
+            <div class='vgo'>Open <span>›</span></div>`;
+          listEl.appendChild(a);
+        });
+        return;
+      }
+
+      // ②-b 无 subchildren 但有 items（旧二级逻辑）
+      if (child && childHasItems(typeKey, childKey)) {
+        titleEl.textContent   = child.name;
+        subtitleEl.textContent= child.note || data.subtitle || '';
+        listEl.innerHTML = '';
+
+        document.querySelector('.crumb').innerHTML =
+          `<a href="index.html#categories">← Back to Categories</a> · 
+           <a href="?type=${encodeURIComponent(typeKey)}">${data.title}</a> · 
+           <span>${child.name}</span>`;
+
+        (child.items||[]).forEach(it=>{
+          const a = document.createElement('a');
+          a.className = 'vitem';
+          a.href = `detail.html?id=${encodeURIComponent(it.id||it.name)}`;
+          a.innerHTML = `
+            <div class='vthumb'><img src="${safeSrc(it.thumb||'')}" alt="${it.name||''}" loading="lazy" decoding="async" /></div>
+            <div class='vbody'><div class='vtitle'>${it.name}</div></div>
+            <div class='vgo'>View <span>›</span></div>`;
+          listEl.appendChild(a);
+        });
+        return;
+      }
+      // 若 child 不存在或无数据，回退到一级
+    }
+
+    // ① 一级：展示该类 children（含 items 或 subchildren 的都走内部路由）
     titleEl.textContent = data.title;
     subtitleEl.textContent = data.subtitle;
     document.querySelector('.crumb').innerHTML =
@@ -524,58 +709,58 @@ const keys = ['weld','threaded','flanges','values'];
     listEl.innerHTML = '';
     (data.children||[]).forEach(it=>{
       const childKey2 = it.key || it.id || it.name;
+      const hasSub   = Array.isArray(it.subchildren) && it.subchildren.length;
+      const hasItems = Array.isArray(it.items) && it.items.length;
+
       const a = document.createElement('a');
       a.className = 'vitem';
-
-      if (Array.isArray(it.items) && it.items.length){
-        // 该子类支持二级
+      if (hasSub || hasItems){
         a.href = `?type=${encodeURIComponent(typeKey)}&child=${encodeURIComponent(childKey2)}`;
       } else {
-        // 没有 items：维持原 detail.html 行为
         a.href = `detail.html?id=${encodeURIComponent(it.id||it.key||it.name)}`;
       }
 
       a.innerHTML = `
         <div class='vthumb'>
-          <img src="${it.thumb || ''}" alt="${it.name || ''}" loading="lazy" decoding="async" />
+          <img src="${safeSrc(it.thumb || '')}" alt="${it.name || ''}" loading="lazy" decoding="async" />
         </div>
         <div class='vbody'>
           <div class='vtitle'>${it.name}</div>
           <p class='vnote'>${it.note||''}</p>
         </div>
-        <div class='vgo'>${(Array.isArray(it.items)&&it.items.length)?'Open':'View'} <span>›</span></div>`;
+        <div class='vgo'>${(hasSub||hasItems)?'Open':'View'} <span>›</span></div>`;
       listEl.appendChild(a);
     });
   }
 
-  // ========== LEFT TREE ==========
-  function buildTree(selectedType){
+  // ========== LEFT TREE（Valves 也可展开到第三级） ==========
+  function buildTree(selectedType, selectedChild=null, selectedGrand=null){
     treeEl.innerHTML = '';
     keys.forEach(key=>{
       const li = document.createElement('li');
 
-      // 对 values：不展示“展开”态
-      const isValues = key === 'values' || key === 'flanges';
-      li.className = 'node-wrap' + ((key===selectedType && !isValues) ? ' open' : '');
+      // 仅 Flanges 不展开；Valves 允许展开
+      const notCollapsible = (key === 'flanges');
+      li.className = 'node-wrap' + ((key===selectedType && !notCollapsible) ? ' open' : '');
 
       const node = document.createElement('div');
       node.className = 'node';
-      node.innerHTML = `<span>${CATALOG[key].title}</span><span>${(key===selectedType && !isValues)?'−':'+'}</span>`;
+      node.innerHTML = `<span>${CATALOG[key].title}</span><span>${(key===selectedType && !notCollapsible)?'−':'+'}</span>`;
 
       // 点击分类标题
       node.addEventListener('click', ()=>{
         if (key !== currentType) {
           currentType  = key;
-          currentChild = null; // 切换类时清空 child
+          currentChild = null;
+          currentGrand = null;
           const p = new URLSearchParams(location.search);
           p.set('type', currentType);
-          p.delete('child');
+          p.delete('child'); p.delete('grand');
           history.pushState({type: currentType}, '', `?${p.toString()}`);
-          renderRight(currentType, currentChild);
-          buildTree(currentType);
+          renderRight(currentType, currentChild, currentGrand);
+          buildTree(currentType, currentChild, currentGrand);
         } else {
-          // 只有非 values 才允许折叠/展开
-          if (!isValues) {
+          if (!notCollapsible) {
             li.classList.toggle('open');
             node.querySelector('span:last-child').textContent =
               li.classList.contains('open') ? '−' : '+';
@@ -584,44 +769,47 @@ const keys = ['weld','threaded','flanges','values'];
       });
       li.appendChild(node);
 
-      // 子链接：values 不创建 children（不展开）
-      if (!isValues) {
+      // 子链接：仅当允许展开时创建 children
+      if (!notCollapsible) {
         const kids = document.createElement('div');
         kids.className = 'children';
         (CATALOG[key].children||[]).forEach(child=>{
           const a = document.createElement('a');
           const childKey = child.key || child.id || child.name;
+          const hasSub   = Array.isArray(child.subchildren) && child.subchildren.length;
           const hasItems = Array.isArray(child.items) && child.items.length;
 
-          if (hasItems){
-            // 有二级数据：内部路由进入 ?type=...&child=...
+          if (hasSub || hasItems){
+            // 二级入口：?type=...&child=...
             a.href = `?type=${encodeURIComponent(key)}&child=${encodeURIComponent(childKey)}`;
-            if (currentType===key && currentChild===childKey) a.style.borderColor = 'var(--accent)';
+            if (currentType===key && currentChild===childKey && !currentGrand) a.style.borderColor = 'var(--accent)';
             a.addEventListener('click', (e)=>{
               e.preventDefault();
               currentType  = key;
               currentChild = childKey;
+              currentGrand = null;
               const p = new URLSearchParams();
               p.set('type', key);
               p.set('child', childKey);
               history.pushState({type:key, child:childKey}, '', `?${p.toString()}`);
-              renderRight(key, childKey);
-              buildTree(key);
+              renderRight(key, childKey, null);
+              buildTree(key, childKey, null);
               document.getElementById('list').scrollIntoView({behavior:'smooth'});
             });
           } else {
-            // 无二级数据：维持你原来的 detail.html 行为
+            // 无二级数据：维持 detail.html 行为
             a.href = `detail.html?id=${encodeURIComponent(child.id||child.key||child.name)}`;
             a.addEventListener('click', (e)=>{
               if(key!==currentType){
                 e.preventDefault();
                 currentType = key;
                 currentChild = null;
+                currentGrand = null;
                 const p = new URLSearchParams();
                 p.set('type', currentType);
                 history.pushState({type: currentType}, '', `?${p.toString()}`);
-                renderRight(currentType);
-                buildTree(currentType);
+                renderRight(currentType, null, null);
+                buildTree(currentType, null, null);
                 document.getElementById('list').scrollIntoView({behavior:'smooth'});
               }
             });
@@ -629,6 +817,37 @@ const keys = ['weld','threaded','flanges','values'];
 
           a.innerHTML = `<span>${child.name}</span><span>›</span>`;
           kids.appendChild(a);
+
+          // ★ 如果该 child 有 subchildren 且当前选中它，则展开第三级链接
+          if (hasSub && currentType===key && currentChild===childKey){
+            const gwrap = document.createElement('div');
+            gwrap.style.margin = '8px 0 0 12px';
+            (child.subchildren||[]).forEach(sc=>{
+              const scA = document.createElement('a');
+              const scKey = sc.key || sc.id || sc.name;
+              scA.href = `?type=${encodeURIComponent(key)}&child=${encodeURIComponent(childKey)}&grand=${encodeURIComponent(scKey)}`;
+              if (selectedGrand===scKey) scA.style.borderColor = 'var(--accent)';
+              scA.style.marginBottom = '6px';
+              scA.className = 'children-link';
+              scA.innerHTML = `<span>${sc.name}</span><span>›</span>`;
+              scA.addEventListener('click', (e)=>{
+                e.preventDefault();
+                currentType  = key;
+                currentChild = childKey;
+                currentGrand = scKey;
+                const p = new URLSearchParams();
+                p.set('type', key);
+                p.set('child', childKey);
+                p.set('grand', scKey);
+                history.pushState({type:key, child:childKey, grand:scKey}, '', `?${p.toString()}`);
+                renderRight(key, childKey, scKey);
+                buildTree(key, childKey, scKey);
+                document.getElementById('list').scrollIntoView({behavior:'smooth'});
+              });
+              gwrap.appendChild(scA);
+            });
+            kids.appendChild(gwrap);
+          }
         });
         li.appendChild(kids);
       }
@@ -636,9 +855,10 @@ const keys = ['weld','threaded','flanges','values'];
       treeEl.appendChild(li);
     });
   }
+
   // ===== Init =====
-  renderRight(currentType, currentChild);
-  buildTree(currentType);
+  renderRight(currentType, currentChild, currentGrand);
+  buildTree(currentType, currentChild, currentGrand);
 
   /* ---- Block navigation to detail.html (keep structure intact) ---- */
   (function blockDetailNav(){
@@ -648,8 +868,8 @@ const keys = ['weld','threaded','flanges','values'];
       const raw = a.getAttribute('href') || '';
       let hit = false;
 
-      // 任何 ?type=...&child=... 的二级入口都不拦截（不仅是 weld）
-      if (/^\?[^#]*\btype=[^&]+&child=/.test(raw)) return;
+      // 内部路由（含 child 或 grand）一律放行
+      if (/^\?[^#]*\btype=[^&]+&(child|grand)=/.test(raw)) return;
 
       if (raw.startsWith('detail.html')) hit = true;
       else {
@@ -661,7 +881,7 @@ const keys = ['weld','threaded','flanges','values'];
       if (hit){
         ev.preventDefault();
         a.blur();
-        // TODO: 这里可以弹出抽屉/Modal；从 raw 或 a.href 的参数里取 id
+        // TODO: 可在此弹出抽屉/Modal，读取 id 渲染详情
       }
     }, true);
   })();
@@ -671,19 +891,10 @@ const keys = ['weld','threaded','flanges','values'];
     const sp = new URLSearchParams(location.search);
     currentType  = (ev.state && ev.state.type)  || sp.get('type')  || 'weld';
     currentChild = (ev.state && ev.state.child) || sp.get('child') || null;
-    renderRight(currentType, currentChild);
-    buildTree(currentType);
+    currentGrand = (ev.state && ev.state.grand) || sp.get('grand') || null;
+    renderRight(currentType, currentChild, currentGrand);
+    buildTree(currentType, currentChild, currentGrand);
   };
-
-  // Mobile menu
-  const menuBtn = document.getElementById('menuBtn');
-  const navLinks = document.getElementById('navLinks');
-  menuBtn?.addEventListener('click',()=>{
-    const show = navLinks.style.display === 'flex';
-    navLinks.style.display = show ? 'none' : 'flex';
-    navLinks.style.flexDirection = 'column';
-    navLinks.style.gap = '12px';
-  });
 </script>
 </body>
 </html>
