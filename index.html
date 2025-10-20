@@ -146,6 +146,17 @@
     .hero-photo{ min-height: 300px; }
   }
 
+  .brand{display:inline-flex;align-items:center;gap:8px;font-weight:800;letter-spacing:.4px;font-size:22px;color:#e2e8f0}
+  .brand img{
+    height:75px;          /* 导航栏里视觉高度 */
+    width:auto;
+    display:block;
+  }
+  @media (max-width:880px){
+    .brand img{height:75px}
+  }
+
+  footer .brand img{ height:55px; }
 
   /* Search suggestions */
   .searchbox{position:relative}
@@ -162,6 +173,41 @@
   .search-suggest a small{font-weight:500;color:#64748b}
   .search-suggest a:hover{background:#f8fafc}
   @media (max-width:880px){ .searchbox{width:100%} }
+
+    .about-grid{
+    display:grid;
+    grid-template-columns: 1.1fr .9fr; /* 左文略宽 */
+    gap:16px;
+    align-items:center;
+  }
+  .about-copy p{
+    margin:0 0 10px;
+    color:var(--muted);
+    line-height:1.6;
+  }
+  .about-copy p:first-child{
+    color:#0b1220;
+    font-weight:600;
+  }
+  .about-visual img{
+    width:100%;
+    height:auto;
+    border-radius:14px;
+    box-shadow: var(--shadow);
+    border:1px solid #e5e7eb;
+    object-fit:cover;
+  }
+
+  /* 响应式：平板/手机变为一列，图片下置并缩小外观阴影 */
+  @media (max-width: 880px){
+    .about-grid{
+      grid-template-columns:1fr;
+    }
+    .about-visual img{
+      border-radius:12px;
+      box-shadow:0 8px 24px rgba(15,23,42,.08);
+    }
+  }
   </style>
 </head>
 <body>
@@ -176,7 +222,9 @@
   <nav class="nav">
     <div class="container nav__row">
       <button class="menu-btn" id="menuBtn">☰</button>
-      <a class="brand" href="index.html" aria-label="NEXPIPE home">NEX<em>PIPE</em></a>
+      <a class="brand" href="index.html" aria-label="NEXPIPE home">
+        <img src="image/logo.jpg" alt="NEXPIPE" />
+      </a>
       <div class="search searchbox">
         <input id="q" type="search" placeholder="Search: fittings, flanges, valves…" />
         <button id="qBtn">Search</button>
@@ -267,6 +315,98 @@
     </div>
   </div>
 </section>
+
+<!-- ===== About ===== -->
+<section id="about-block" class="section">
+  <style>
+    /* 仅作用于 About 区域 */
+    #about-block .about-title{
+      margin:0 0 14px;
+      font-size:22px; font-weight:800; color:#0b1220;
+    }
+    #about-block .about-card{
+      background:var(--card); border:1px solid #e5e7eb;
+      border-radius:14px; box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    #about-block .about-grid{
+      display:grid; grid-template-columns:1.2fr .8fr; gap:0; align-items:stretch;
+    }
+    #about-block .about-copy{
+      padding:22px;
+    }
+    #about-block .about-copy p{
+      margin:0; line-height:1.7; color:#0b1220; font-size:15.5px;
+    }
+    #about-block .about-copy ul{
+      margin:14px 0 0; padding-left:18px; color:#475569; font-size:14.5px;
+    }
+    #about-block .about-copy li{ margin:6px 0 }
+    #about-block .about-media{
+      position:relative; min-height:280px; background:#0f172a;
+    }
+    #about-block .about-media img{
+      width:100%; height:100%; object-fit:cover; display:block;
+    }
+    #about-block .about-media::after{
+      content:""; position:absolute; inset:0;
+      background:linear-gradient(135deg, rgba(11,18,32,.06), rgba(11,18,32,0));
+      pointer-events:none;
+    }
+    #about-block .about-badges{
+      display:flex; flex-wrap:wrap; gap:8px; margin-top:14px;
+    }
+    #about-block .about-badge{
+      padding:6px 10px; border:1px solid #e5e7eb; border-radius:999px;
+      font-size:12.5px; font-weight:700; background:#fff;
+    }
+    @media (max-width:980px){
+      #about-block .about-grid{ grid-template-columns:1fr }
+      #about-block .about-media{ order:-1; min-height:220px }
+    }
+  </style>
+
+  <div class="container">
+    <h2 class="about-title">About</h2>
+
+    <div class="about-card">
+      <div class="about-grid">
+        <!-- Left: copy -->
+        <div class="about-copy">
+          <p>
+            We are a China based manufacturer of industrial piping components, providing forged, socket weld and threaded
+            fittings, flanges, and pipes/pup pieces, combining in house production with stock ready fulfillment. We deliver
+            full MTR traceability and ISO driven quality assurance with rapid response for both projects and maintenance.
+            Our materials include 304/316 austenitic stainless steel, duplex S31803/S32205, super duplex S32750/S32760,
+            and nickel alloys such as Monel, Inconel, Incoloy, Hastelloy, and Alloy 20.
+          </p>
+
+          <!-- 可选徽章（不需要可整块删除） -->
+          <div class="about-badges">
+            <span class="about-badge">In-house Production</span>
+            <span class="about-badge">Stock-Ready</span>
+            <span class="about-badge">MTR Traceability</span>
+            <span class="about-badge">ISO QA</span>
+            <span class="about-badge">Rapid Response</span>
+          </div>
+
+          <!-- 可选要点（不需要可删除） -->
+          <ul>
+            <li>Product scope: forged, socket weld & threaded fittings, flanges, pipes & pup pieces</li>
+            <li>Materials: 304/316, duplex S31803/S32205, super duplex S32750/S32760, nickel alloys</li>
+            <li>Documentation: full MTR and ISO driven procedures</li>
+          </ul>
+        </div>
+
+        <!-- Right: image（换成你的图片路径） -->
+        <div class="about-media">
+          <img src="image/about.jpg" alt="Factory production and stock-ready fulfillment" loading="lazy" decoding="async" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===== /About ===== -->
 
 
 <section id="categories" class="section">
@@ -601,7 +741,7 @@
   <footer id="about">
     <div class="container footer-grid">
       <div>
-        <div class="brand">NEX<em>PIPE</em></div>
+        <div class="brand"><img src="image/logo.jpg" alt="NEXPIPE" /></div>
         <p style="color:#94a3b8">Industrial components direct-supply platform.</p>
       </div>
       <div>
@@ -650,51 +790,51 @@
       navLinks.style.gap = '12px';
     });
 
-    const SEARCH_INDEX = [
-      /* Top-level categories */
-      { label:'Welded Fittings', note:'对焊 / 承插焊', url:'category.html?type=weld',
-        alias:['weld','welded','对焊','承插焊','butt weld','socket weld'] },
-      { label:'Threaded Fittings', note:'BSPT / NPT', url:'category.html?type=threaded',
-        alias:['thread','threaded','螺纹','bspt','npt','150','3000','6000','forged threaded'] },
-      { label:'Flanges', note:'SO / WN / Blind / Threaded', url:'category.html?type=flanges',
-        alias:['flange','flanges','法兰','四氟垫片','gasket'] },
-      { label:'Valves', note:'Cast / Forged', url:'category.html?type=valves',
-        alias:['valve','valves','阀门','球阀','闸阀','截止阀','止回阀','过滤器'] },
+  const SEARCH_INDEX = [
+    /* Top-level */
+    { label:'Welded Fittings', note:'Butt-Weld / Socket-Weld', url:'category.html?type=weld',
+      alias:['weld','welded','butt weld','socket weld','bw','sw'] },
+    { label:'Threaded Fittings', note:'BSPT / NPT', url:'category.html?type=threaded',
+      alias:['thread','threaded','bspt','npt','150','3000','6000','forged threaded'] },
+    { label:'Flanges', note:'SO / WN / Blind / Threaded', url:'category.html?type=flanges',
+      alias:['flange','flanges','gasket','ptfe'] },
+    { label:'Valves', note:'Cast / Forged', url:'category.html?type=valves',
+      alias:['valve','valves','ball','gate','globe','check','strainer'] },
 
-      /* Welded → 2nd / 3rd */
-      { label:'Butt Weld', note:'对焊 Elbows / Tees / Reducers', url:'category.html?type=weld&child=butt',
-        alias:['butt','butt-weld','对焊','LR','SR','三通','弯头','大小头','管帽','stub end'] },
-      { label:'Socket Weld · Carbon Steel (A105)', note:'weld → socket → CS', url:'category.html?type=weld&child=socket&grand=sw-cs-a105',
-        alias:['socket','承插焊','碳钢','a105','carbon','cs'] },
-      { label:'Socket Weld · Stainless (304/316)', note:'weld → socket → SS', url:'category.html?type=weld&child=socket&grand=sw-ss-304316',
-        alias:['socket','承插焊','不锈钢','stainless','304','316','ss'] },
+    /* Welded → 2nd / 3rd */
+    { label:'Butt Weld', note:'Elbows / Tees / Reducers', url:'category.html?type=weld&child=butt',
+      alias:['butt','butt-weld','lr elbow','sr elbow','tee','reducer','cap','stub end'] },
+    { label:'Socket Weld · Carbon Steel (A105)', note:'weld → socket → CS', url:'category.html?type=weld&child=socket&grand=sw-cs-a105',
+      alias:['socket','socket-weld','a105','carbon','cs','hp'] },
+    { label:'Socket Weld · Stainless (304/316)', note:'weld → socket → SS', url:'category.html?type=weld&child=socket&grand=sw-ss-304316',
+      alias:['socket','socket-weld','stainless','ss','304','316','hp'] },
 
-      /* Threaded → 2nd / 3rd */
-      { label:'Threaded Fittings 150#', note:'threaded → 150#', url:'category.html?type=threaded&child=low',
-        alias:['150','低压','light','plain','低压螺纹','150#'] },
-      { label:'Forged Threaded 3000#/6000#', note:'threaded → forged', url:'category.html?type=threaded&child=forged',
-        alias:['forged','3000','6000','高压螺纹','3000#','6000#'] },
-      { label:'Forged Threaded · Carbon Steel (A105)', note:'threaded → forged → CS', url:'category.html?type=threaded&child=forged&grand=ft-cs-a105',
-        alias:['forged','碳钢','a105','carbon','cs','3000','6000'] },
-      { label:'Forged Threaded · Stainless (304/316)', note:'threaded → forged → SS', url:'category.html?type=threaded&child=forged&grand=ft-ss-304316',
-        alias:['forged','不锈钢','stainless','304','316','ss','3000','6000'] },
+    /* Threaded → 2nd / 3rd */
+    { label:'Threaded Fittings 150#', note:'threaded → 150#', url:'category.html?type=threaded&child=low',
+      alias:['150','low pressure','plain','hose','light duty'] },
+    { label:'Forged Threaded 3000#/6000#', note:'threaded → forged', url:'category.html?type=threaded&child=forged',
+      alias:['forged','3000','6000','hp threaded','class 3000','class 6000'] },
+    { label:'Forged Threaded · Carbon Steel (A105)', note:'threaded → forged → CS', url:'category.html?type=threaded&child=forged&grand=ft-cs-a105',
+      alias:['forged','carbon','cs','a105','3000','6000'] },
+    { label:'Forged Threaded · Stainless (304/316)', note:'threaded → forged → SS', url:'category.html?type=threaded&child=forged&grand=ft-ss-304316',
+      alias:['forged','stainless','ss','304','316','3000','6000'] },
 
-      /* Valves → 2nd / 3rd */
-      { label:'Ball Valves', note:'valves → ball', url:'category.html?type=valves&child=ball',
-        alias:['ball','球阀','1p','2p','3p','one piece','two piece','three piece'] },
-      { label:'Ball Valves · 1-Piece', note:'valves → ball → 1P', url:'category.html?type=valves&child=ball&grand=ball-1p',
-        alias:['1p','one piece','一片式','蝶形'] },
-      { label:'Ball Valves · 2-Piece', note:'valves → ball → 2P', url:'category.html?type=valves&child=ball&grand=ball-2p',
-        alias:['2p','two piece','二片式'] },
-      { label:'Ball Valves · 3-Piece', note:'valves → ball → 3P', url:'category.html?type=valves&child=ball&grand=ball-3p',
-        alias:['3p','three piece','三片式','焊接球阀'] },
-      { label:'Forged Steel Valves', note:'valves → forged-steel', url:'category.html?type=valves&child=forged-steel',
-        alias:['forged steel','锻钢阀门','承插焊阀','螺纹阀','法兰阀'] },
-      { label:'High-Pressure Stainless (Forged)', note:'valves → hp-stainless', url:'category.html?type=valves&child=hp-stainless',
-        alias:['high pressure','高压','不锈钢阀'] },
-      { label:'Cast Stainless (Singles)', note:'valves → cast-ss-singletons', url:'category.html?type=valves&child=cast-ss-singletons',
-        alias:['cast stainless','铸造不锈钢','立式止回','卧式止回','y型过滤器','闸阀'] },
-    ];
+    /* Valves → 2nd / 3rd */
+    { label:'Ball Valves', note:'valves → ball', url:'category.html?type=valves&child=ball',
+      alias:['ball valve','1p','2p','3p','one piece','two piece','three piece'] },
+    { label:'Ball Valves · 1-Piece', note:'valves → ball → 1P', url:'category.html?type=valves&child=ball&grand=ball-1p',
+      alias:['1p','one-piece','wafer'] },
+    { label:'Ball Valves · 2-Piece', note:'valves → ball → 2P', url:'category.html?type=valves&child=ball&grand=ball-2p',
+      alias:['2p','two-piece','split body'] },
+    { label:'Ball Valves · 3-Piece', note:'valves → ball → 3P', url:'category.html?type=valves&child=ball&grand=ball-3p',
+      alias:['3p','three-piece','welded ends'] },
+    { label:'Forged Steel Valves', note:'valves → forged-steel', url:'category.html?type=valves&child=forged-steel',
+      alias:['forged steel','threaded','socket-weld','flanged'] },
+    { label:'High-Pressure Stainless (Forged)', note:'valves → hp-stainless', url:'category.html?type=valves&child=hp-stainless',
+      alias:['high pressure','hp','stainless'] },
+    { label:'Cast Stainless (Singles)', note:'valves → cast-ss-singletons', url:'category.html?type=valves&child=cast-ss-singletons',
+      alias:['cast stainless','gate','vertical check','horizontal check','y-strainer'] },
+  ];
 
     /** 简单分词与评分：query 命中 alias 的个数越多，分越高；支持模糊包含 */
     function score(item, qTokens){
